@@ -240,15 +240,6 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const category = header.getAttribute('data-cat');
       filterCatalogue(category);
-      
-      // Auto-scroll on mobile to show filtered cards if clicked tabs
-      if (window.innerWidth <= 1024) {
-        const gridTop = catGrid.getBoundingClientRect().top + window.scrollY - navbar.offsetHeight - 20;
-        window.scrollTo({
-          top: gridTop,
-          behavior: 'smooth'
-        });
-      }
     });
   });
   

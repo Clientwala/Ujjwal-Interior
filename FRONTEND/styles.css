@@ -1312,19 +1312,10 @@ body.menu-open {
   width: 100%;
 }
 
-.testimonial-card {
+.testimonial-slide {
   flex: 0 0 33.333%;
   padding: 0 12px; /* Gap between cards */
   box-sizing: border-box;
-}
-
-/* Card inner content */
-.testimonial-card {
-  position: relative;
-}
-
-/* Override inner container styling */
-.testimonial-card {
   display: flex;
 }
 
@@ -2218,7 +2209,7 @@ body.menu-open {
     grid-template-columns: repeat(2, 1fr);
   }
   
-  .testimonial-card {
+  .testimonial-slide {
     flex: 0 0 50%;
   }
   
@@ -2289,9 +2280,13 @@ body.menu-open {
   }
   
   /* Testimonials: single card full width */
-  .testimonial-card {
+  .testimonial-slide {
     flex: 0 0 100%;
-    padding: 0 4px;
+    padding: 0 8px;
+  }
+  
+  .testimonial-card {
+    padding: 28px 20px 20px 20px;
   }
 
   .carousel-container {
@@ -2423,15 +2418,35 @@ body.menu-open {
   }
 
   .cat-card-actions {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   .btn-cat-quote {
-    flex: 1;
     text-align: center;
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+
+  .btn-cat-wa {
+    width: 32px;
+    height: 32px;
   }
 
   /* Testimonials tight on small phones */
+  .testimonial-card {
+    padding: 20px 16px;
+  }
+
+  .testimonial-text {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+
+  .testimonial-tags {
+    margin-bottom: 16px;
+  }
+
   .carousel-container {
     padding: 0 28px;
   }
