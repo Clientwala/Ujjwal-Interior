@@ -501,23 +501,7 @@ body.menu-open {
   background-color: rgba(201, 168, 76, 0.4);
 }
 
-/* Animated Caret Down Indicator */
-.scroll-indicator {
-  position: absolute;
-  bottom: 96px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: var(--gold);
-  font-size: 24px;
-  animation: bounceCaret 2s infinite;
-  z-index: 3;
-}
-
-@keyframes bounceCaret {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
-  40% { transform: translateY(-10px) translateX(-50%); }
-  60% { transform: translateY(-5px) translateX(-50%); }
-}
+/* Scroll indicator removed */
 
 /* ==========================================================================
    7. SECTION 3: ABOUT
@@ -1125,7 +1109,7 @@ body.menu-open {
 
 .catalogue-layout {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 260px 1fr;
   gap: 40px;
   margin-top: 40px;
 }
@@ -1168,6 +1152,7 @@ body.menu-open {
 
 .category-header i {
   transition: transform 0.3s ease;
+  flex-shrink: 0;
 }
 
 .category-header.active i {
@@ -1181,6 +1166,7 @@ body.menu-open {
   gap: 20px;
   min-height: 400px;
   transition: opacity 0.3s ease;
+  align-content: start;
 }
 
 .catalogue-card {
@@ -1534,15 +1520,16 @@ body.menu-open {
 /* Overall Rating Box */
 .overall-rating-box {
   margin-top: 60px;
-  display: inline-block;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
   background-color: var(--white);
   box-shadow: var(--shadow-premium);
   border-radius: 12px;
   border: 1px solid var(--border);
   padding: 28px 48px;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .rating-flex {
@@ -2160,25 +2147,29 @@ body.menu-open {
     grid-template-columns: repeat(2, 1fr);
   }
   
+  /* Catalogue: switch to full-width stacked layout on tablet */
   .catalogue-layout {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 24px;
   }
   
   .catalogue-sidebar {
     position: static;
   }
   
-  /* Horizontal tabs for categories on mobile/tablet */
+  /* Horizontal scrollable pill tabs for categories */
   .catalogue-categories {
     flex-direction: row;
     overflow-x: auto;
-    padding-bottom: 10px;
+    padding-bottom: 8px;
+    gap: 10px;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) transparent;
   }
   
   .catalogue-categories::-webkit-scrollbar {
-    height: 4px;
+    height: 3px;
   }
   
   .catalogue-categories::-webkit-scrollbar-thumb {
@@ -2186,14 +2177,25 @@ body.menu-open {
     border-radius: 4px;
   }
   
+  .category-group {
+    flex-shrink: 0;
+  }
+  
   .category-header {
     white-space: nowrap;
-    padding: 12px 20px;
+    padding: 10px 18px;
     font-size: 13px;
+    border-radius: 50px;
+    width: auto;
   }
   
   .category-header i {
     display: none;
+  }
+  
+  /* Catalogue grid: 2 columns on tablet */
+  .catalogue-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
   
   .testimonial-card {
@@ -2252,20 +2254,16 @@ body.menu-open {
   }
   
   .hero-stats-strip {
-    display: none; /* Hide bottom stats strip on mobile to optimize space */
+    display: none;
   }
-  
-  .scroll-indicator {
-    bottom: 24px;
-  }
-  
+
   .about-img-container {
     padding-right: 0;
     margin-bottom: 24px;
   }
   
   .about-img {
-    height: 380px;
+    height: 320px;
   }
   
   .justdial-badge {
@@ -2286,20 +2284,69 @@ body.menu-open {
     grid-template-columns: 1fr;
   }
   
+  /* Testimonials: single card full width */
   .testimonial-card {
     flex: 0 0 100%;
+    padding: 0 4px;
+  }
+
+  .carousel-container {
+    padding: 0 36px;
+  }
+
+  .prev-btn {
+    left: -4px;
+  }
+
+  .next-btn {
+    right: -4px;
   }
   
+  /* Rating box full width on mobile */
   .overall-rating-box {
-    padding: 24px 30px;
+    padding: 24px 28px;
     width: 100%;
-    max-width: 340px;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   
   .rating-flex {
     flex-direction: column;
+    align-items: center;
     text-align: center;
     gap: 12px;
+  }
+
+  .rating-stars-group {
+    align-items: center;
+  }
+  
+  /* Catalogue: full 1-col on mobile */
+  .catalogue-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .catalogue-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .catalogue-categories {
+    gap: 8px;
+    padding-bottom: 6px;
+  }
+
+  .category-header {
+    padding: 9px 16px;
+    font-size: 12px;
+  }
+
+  .catalogue-card {
+    padding: 18px;
+  }
+
+  .cat-service-desc {
+    -webkit-line-clamp: 4;
   }
   
   .footer-layout {
@@ -2320,6 +2367,10 @@ body.menu-open {
   }
   
   .section-title {
+    font-size: 28px;
+  }
+
+  .hero-title {
     font-size: 32px;
   }
   
@@ -2330,9 +2381,52 @@ body.menu-open {
   .services-grid {
     grid-template-columns: 1fr;
   }
+
+  /* Catalogue fully stacked on small phones */
+  .catalogue-layout {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
   
   .catalogue-grid {
     grid-template-columns: 1fr;
+  }
+
+  .catalogue-categories {
+    padding-bottom: 4px;
+  }
+
+  .category-header {
+    padding: 8px 14px;
+    font-size: 11px;
+  }
+
+  .cat-card-actions {
+    flex-wrap: wrap;
+  }
+
+  .btn-cat-quote {
+    flex: 1;
+    text-align: center;
+  }
+
+  /* Testimonials tight on small phones */
+  .carousel-container {
+    padding: 0 28px;
+  }
+
+  .prev-btn, .next-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .overall-rating-box {
+    padding: 20px 16px;
+  }
+
+  .rating-big {
+    font-size: 56px;
   }
   
   .form-wrapper {
