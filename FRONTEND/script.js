@@ -1,15 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-  
+
   // Backend API Base URI
-  const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-    ? 'http://localhost:5000/api' 
+  const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000/api'
     : '/api';
 
   // ==========================================================================
   // 1. NAVBAR SCROLL BEHAVIOR
   // ==========================================================================
   const navbar = document.getElementById('navbar');
-  
+
   const handleScroll = () => {
     if (window.scrollY > 80) {
       navbar.classList.add('scrolled');
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
       navbar.classList.remove('scrolled');
     }
   };
-  
+
   window.addEventListener('scroll', handleScroll);
   handleScroll(); // Initial check in case page starts scrolled
 
@@ -26,13 +26,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================================================
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-link');
-  
+
   const observerOptions = {
     root: null,
     rootMargin: '-80px 0px -40% 0px', // Adjusted to match sticky nav height
     threshold: 0.15
   };
-  
+
   const sectionObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }, observerOptions);
-  
+
   sections.forEach(section => sectionObserver.observe(section));
 
   // ==========================================================================
@@ -56,15 +56,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobileMenu');
   const mobileMenuLinks = document.querySelectorAll('.mobile-nav-link');
-  
+
   const toggleMenu = () => {
     hamburger.classList.toggle('open');
     mobileMenu.classList.toggle('open');
     document.body.classList.toggle('menu-open');
   };
-  
+
   hamburger.addEventListener('click', toggleMenu);
-  
+
   // Close menu when clicking links
   mobileMenuLinks.forEach(link => {
     link.addEventListener('click', () => {
@@ -83,13 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
     anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href');
       if (targetId === '#') return;
-      
+
       const targetElement = document.querySelector(targetId);
       if (targetElement) {
         e.preventDefault();
         const navHeight = navbar.offsetHeight;
         const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - navHeight;
-        
+
         window.scrollTo({
           top: targetPosition,
           behavior: 'smooth'
@@ -99,45 +99,117 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================================================
-  // 5. GALLERY FILTER SYSTEM
+  // 5. GALLERY FILTER SYSTEM & SHOW MORE / SHOW LESS TRUNCATION
   // ==========================================================================
   const filterTabs = document.querySelectorAll('.filter-tab');
   const portfolioGrid = document.getElementById('portfolioGrid');
   const portfolioItems = document.querySelectorAll('.portfolio-item');
-  
-  filterTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      // Toggle active classes on tab buttons
-      filterTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      
-      const filterValue = tab.getAttribute('data-filter');
-      
-      // Fade out grid
+  const showMoreBtn = document.getElementById('showMoreBtn');
+
+  let activeFilter = 'all';
+  let isExpanded = false;
+
+  // Returns how many items fit in the first row based on current viewport width
+  const getRowSize = () => {
+    return window.innerWidth >= 1024 ? 4 : 3;
+  };
+
+  // Core function: applies filter + truncation and updates button state
+  const updateGallery = (animate = false) => {
+    const rowSize = getRowSize();
+
+    // Build the matching items array for current filter
+    const filteredItems = Array.from(portfolioItems).filter(item =>
+      activeFilter === 'all' || item.classList.contains(activeFilter)
+    );
+
+    const applyVisibility = () => {
+      // Hide all items that don't match the filter
+      portfolioItems.forEach(item => {
+        if (activeFilter !== 'all' && !item.classList.contains(activeFilter)) {
+          item.style.display = 'none';
+        }
+      });
+
+      // Show or hide matching items based on expanded state
+      filteredItems.forEach((item, index) => {
+        item.style.display = (isExpanded || index < rowSize) ? 'block' : 'none';
+      });
+
+      // Update Show More / Show Less button
+      if (showMoreBtn) {
+        if (filteredItems.length <= rowSize) {
+          showMoreBtn.style.display = 'none';
+        } else {
+          showMoreBtn.style.display = 'inline-flex';
+          const btnText = showMoreBtn.querySelector('span');
+          const btnIcon = showMoreBtn.querySelector('i');
+          if (isExpanded) {
+            if (btnText) btnText.textContent = 'Show Less';
+            if (btnIcon) { btnIcon.className = 'ph ph-caret-up'; }
+            showMoreBtn.classList.add('expanded');
+          } else {
+            if (btnText) btnText.textContent = 'Show More';
+            if (btnIcon) { btnIcon.className = 'ph ph-caret-down'; }
+            showMoreBtn.classList.remove('expanded');
+          }
+        }
+      }
+    };
+
+    if (animate) {
       portfolioGrid.style.opacity = '0';
       portfolioGrid.style.transform = 'translateY(15px)';
       portfolioGrid.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-      
       setTimeout(() => {
-        portfolioItems.forEach(item => {
-          if (filterValue === 'all') {
-            item.style.display = 'block';
-          } else if (item.classList.contains(filterValue)) {
-            item.style.display = 'block';
-          } else {
-            item.style.display = 'none';
-          }
-        });
-        
-        // Fade in grid
+        applyVisibility();
         portfolioGrid.style.opacity = '1';
         portfolioGrid.style.transform = 'translateY(0)';
       }, 300);
+    } else {
+      applyVisibility();
+    }
+  };
+
+  // Filter tab clicks
+  filterTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      filterTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      activeFilter = tab.getAttribute('data-filter');
+      isExpanded = false; // Reset expansion on every filter change
+      updateGallery(true);
     });
   });
 
+  // Show More / Show Less button click
+  if (showMoreBtn) {
+    showMoreBtn.addEventListener('click', () => {
+      isExpanded = !isExpanded;
+      updateGallery(true);
+
+      // On collapse, scroll back up to the portfolio section
+      if (!isExpanded) {
+        const portfolioSection = document.getElementById('portfolio');
+        const navHeight = (document.getElementById('navbar') || {}).offsetHeight || 80;
+        if (portfolioSection) {
+          window.scrollTo({
+            top: portfolioSection.getBoundingClientRect().top + window.scrollY - navHeight,
+            behavior: 'smooth'
+          });
+        }
+      }
+    });
+  }
+
+  // Recompute on resize (row size changes between desktop / mobile thresholds)
+  window.addEventListener('resize', () => updateGallery(false));
+
+  // Initial render
+  updateGallery(false);
+
   // ==========================================================================
-  // 6. LIGHTBOX MODAL (PAGESWIPING VISIBLE PORTFOLIO IMAGES)
+  // 6. LIGHTBOX MODAL (NAVIGATES ALL FILTERED IMAGES, EVEN IF GRID IS COLLAPSED)
   // ==========================================================================
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightboxImg');
@@ -145,55 +217,56 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightboxClose = document.getElementById('lightboxClose');
   const lightboxPrev = document.getElementById('lightboxPrev');
   const lightboxNext = document.getElementById('lightboxNext');
-  
+
   let currentVisibleItems = [];
   let currentImgIndex = 0;
-  
-  // Open Lightbox
+
+  // Open Lightbox — navigate ALL items matching the active filter
   portfolioItems.forEach(item => {
     item.addEventListener('click', () => {
-      // Find all currently displayed items (based on filter)
-      currentVisibleItems = Array.from(portfolioItems).filter(el => el.style.display !== 'none');
+      currentVisibleItems = Array.from(portfolioItems).filter(el =>
+        activeFilter === 'all' || el.classList.contains(activeFilter)
+      );
       currentImgIndex = currentVisibleItems.indexOf(item);
-      
+
       updateLightboxContent();
       lightbox.classList.add('open');
-      document.body.style.overflow = 'hidden'; // Lock scrolling
+      document.body.style.overflow = 'hidden';
     });
   });
-  
+
   const updateLightboxContent = () => {
     if (currentVisibleItems.length === 0) return;
     const currentItem = currentVisibleItems[currentImgIndex];
     const imgSrc = currentItem.getAttribute('data-src');
     const imgText = currentItem.querySelector('.overlay-text').textContent;
-    
+
     lightboxImg.src = imgSrc;
     lightboxCaption.textContent = imgText;
   };
-  
+
   const nextImage = () => {
     currentImgIndex = (currentImgIndex + 1) % currentVisibleItems.length;
     updateLightboxContent();
   };
-  
+
   const prevImage = () => {
     currentImgIndex = (currentImgIndex - 1 + currentVisibleItems.length) % currentVisibleItems.length;
     updateLightboxContent();
   };
-  
+
   const closeLightbox = () => {
     lightbox.classList.remove('open');
     if (!document.body.classList.contains('menu-open')) {
       document.body.style.overflow = ''; // Unlock scrolling
     }
   };
-  
+
   lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); nextImage(); });
   lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); prevImage(); });
   lightboxClose.addEventListener('click', closeLightbox);
   lightbox.addEventListener('click', closeLightbox);
-  
+
   // Close/navigate via Keyboard
   document.addEventListener('keydown', (e) => {
     if (!lightbox.classList.contains('open')) return;
@@ -225,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const clearSearchBtn = document.getElementById('clearSearch');
   const categoriesScroll = document.getElementById('catalogueCategories');
   const categoriesWrapper = document.querySelector('.catalogue-categories-wrapper');
-  
+
   // Create No Results element
   const noResultsDiv = document.createElement('div');
   noResultsDiv.className = 'catalogue-no-results text-center';
@@ -251,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     catGrid.style.opacity = '0';
     catGrid.style.transition = 'opacity 0.25s ease';
-    
+
     setTimeout(() => {
       catCards.forEach(card => {
         if (card.getAttribute('data-category') === category) {
@@ -263,21 +336,21 @@ document.addEventListener('DOMContentLoaded', () => {
       catGrid.style.opacity = '1';
     }, 250);
   };
-  
+
   catHeaders.forEach(header => {
     header.addEventListener('click', () => {
       catHeaders.forEach(h => h.classList.remove('active'));
       header.classList.add('active');
-      
+
       const category = header.getAttribute('data-cat');
       filterCatalogue(category);
-      
+
       // Mobile Tab Centering
       if (window.innerWidth <= 1150 && categoriesScroll) {
         const wrapperRect = categoriesScroll.getBoundingClientRect();
         const headerRect = header.getBoundingClientRect();
         const offsetLeft = headerRect.left - wrapperRect.left + categoriesScroll.scrollLeft - (wrapperRect.width / 2) + (headerRect.width / 2);
-        
+
         categoriesScroll.scrollTo({
           left: offsetLeft,
           behavior: 'smooth'
@@ -285,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
-  
+
   // Load default catalogue cards (painting)
   filterCatalogue('painting');
 
@@ -293,14 +366,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const handleSearch = () => {
     if (!searchInput) return;
     const query = searchInput.value.toLowerCase().trim();
-    
+
     if (query === '') {
       if (clearSearchBtn) clearSearchBtn.style.display = 'none';
       noResultsDiv.style.display = 'none';
       // Restore currently active category
       const activeHeader = document.querySelector('.category-header.active');
       const activeCat = activeHeader ? activeHeader.getAttribute('data-cat') : 'painting';
-      
+
       catCards.forEach(card => {
         if (card.getAttribute('data-category') === activeCat) {
           card.style.display = 'flex';
@@ -310,17 +383,17 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       return;
     }
-    
+
     if (clearSearchBtn) clearSearchBtn.style.display = 'flex';
-    
+
     // Hide active tabs highlights
     catHeaders.forEach(h => h.classList.remove('active'));
-    
+
     let matchCount = 0;
     catCards.forEach(card => {
       const title = card.querySelector('.cat-service-title').textContent.toLowerCase();
       const desc = card.querySelector('.cat-service-desc').textContent.toLowerCase();
-      
+
       if (title.includes(query) || desc.includes(query)) {
         card.style.display = 'flex';
         matchCount++;
@@ -328,14 +401,14 @@ document.addEventListener('DOMContentLoaded', () => {
         card.style.display = 'none';
       }
     });
-    
+
     if (matchCount === 0) {
       noResultsDiv.style.display = 'block';
     } else {
       noResultsDiv.style.display = 'none';
     }
   };
-  
+
   const updateSearchPlaceholder = () => {
     if (!searchInput) return;
     if (window.innerWidth <= 768) {
@@ -346,11 +419,11 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   updateSearchPlaceholder();
   window.addEventListener('resize', updateSearchPlaceholder);
-  
+
   if (searchInput) {
     searchInput.addEventListener('input', handleSearch);
   }
-  
+
   if (clearSearchBtn) {
     clearSearchBtn.addEventListener('click', () => {
       if (searchInput) searchInput.value = '';
@@ -367,27 +440,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateScrollFades = () => {
       const scrollLeft = categoriesScroll.scrollLeft;
       const maxScroll = categoriesScroll.scrollWidth - categoriesScroll.clientWidth;
-      
+
       if (maxScroll <= 0) {
         categoriesWrapper.classList.add('no-scroll');
         return;
       } else {
         categoriesWrapper.classList.remove('no-scroll');
       }
-      
+
       if (scrollLeft > 10) {
         categoriesWrapper.classList.add('scrolled-left');
       } else {
         categoriesWrapper.classList.remove('scrolled-left');
       }
-      
+
       if (maxScroll - scrollLeft > 10) {
         categoriesWrapper.classList.add('scrolled-right');
       } else {
         categoriesWrapper.classList.remove('scrolled-right');
       }
     };
-    
+
     categoriesScroll.addEventListener('scroll', updateScrollFades);
     window.addEventListener('resize', updateScrollFades);
     updateScrollFades(); // initial check
@@ -396,15 +469,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Mobile "Read More" Toggle Logic
   const setupReadMore = () => {
     const isMobile = window.innerWidth <= 768;
-    
+
     catCards.forEach(card => {
       const desc = card.querySelector('.cat-service-desc');
       if (!desc) return;
-      
+
       // Remove any existing read-more button first
       const existingBtn = card.querySelector('.read-more-btn');
       if (existingBtn) existingBtn.remove();
-      
+
       if (isMobile) {
         if (desc.textContent.length > 120) {
           desc.classList.remove('expanded');
@@ -412,7 +485,7 @@ document.addEventListener('DOMContentLoaded', () => {
           btn.className = 'read-more-btn';
           btn.type = 'button';
           btn.innerHTML = 'Read More <i class="ph ph-caret-down"></i>';
-          
+
           btn.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -424,7 +497,7 @@ document.addEventListener('DOMContentLoaded', () => {
               btn.innerHTML = 'Read Less <i class="ph ph-caret-up"></i>';
             }
           });
-          
+
           // Append button to cardBody (safely inside the body container)
           const cardBody = card.querySelector('.cat-card-body');
           if (cardBody) {
@@ -443,7 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Enquire links on primary cards pre-select services
   const primaryEnquireLinks = document.querySelectorAll('.card-enquire-btn, .catalogue-link-btn, .btn-cat-quote');
   const serviceSelect = document.getElementById('formService');
-  
+
   primaryEnquireLinks.forEach(link => {
     link.addEventListener('click', () => {
       const serviceName = link.getAttribute('data-service');
@@ -461,11 +534,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('carouselNext');
   const indicatorsContainer = document.getElementById('carouselIndicators');
   const cards = Array.from(track.children);
-  
+
   let slideIndex = 0;
   let autoPlayTimer = null;
   let visibleCardsCount = 3;
-  
+
   const updateResponsiveCounts = () => {
     const width = window.innerWidth;
     if (width <= 768) {
@@ -476,7 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
       visibleCardsCount = 3;
     }
   };
-  
+
   const setupIndicators = () => {
     indicatorsContainer.innerHTML = '';
     const totalSlides = cards.length - visibleCardsCount + 1;
@@ -491,7 +564,7 @@ document.addEventListener('DOMContentLoaded', () => {
       indicatorsContainer.appendChild(dot);
     }
   };
-  
+
   const updateIndicators = () => {
     const dots = document.querySelectorAll('.indicator-dot');
     dots.forEach((dot, idx) => {
@@ -502,11 +575,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   };
-  
+
   const goToSlide = (index) => {
     updateResponsiveCounts();
     const maxIndex = cards.length - visibleCardsCount;
-    
+
     // Bounds check
     if (index < 0) {
       slideIndex = maxIndex;
@@ -515,37 +588,37 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       slideIndex = index;
     }
-    
+
     // Calculate slide percentage width
     const cardWidth = 100 / visibleCardsCount;
     track.style.transform = `translateX(-${slideIndex * cardWidth}%)`;
     updateIndicators();
   };
-  
+
   const nextSlide = () => {
     goToSlide(slideIndex + 1);
   };
-  
+
   const prevSlide = () => {
     goToSlide(slideIndex - 1);
   };
-  
+
   nextBtn.addEventListener('click', () => { nextSlide(); resetAutoPlay(); });
   prevBtn.addEventListener('click', () => { prevSlide(); resetAutoPlay(); });
-  
+
   // Touch Swipe Support
   let touchStartX = 0;
   let touchEndX = 0;
-  
+
   track.addEventListener('touchstart', (e) => {
     touchStartX = e.changedTouches[0].screenX;
   }, { passive: true });
-  
+
   track.addEventListener('touchend', (e) => {
     touchEndX = e.changedTouches[0].screenX;
     handleSwipe();
   }, { passive: true });
-  
+
   const handleSwipe = () => {
     const swipeThreshold = 50;
     if (touchStartX - touchEndX > swipeThreshold) {
@@ -556,31 +629,31 @@ document.addEventListener('DOMContentLoaded', () => {
       resetAutoPlay();
     }
   };
-  
+
   // Auto-scroll loop
   const startAutoPlay = () => {
     autoPlayTimer = setInterval(nextSlide, 4000);
   };
-  
+
   const stopAutoPlay = () => {
     clearInterval(autoPlayTimer);
   };
-  
+
   const resetAutoPlay = () => {
     stopAutoPlay();
     startAutoPlay();
   };
-  
+
   // Hover pauses auto play
   track.addEventListener('mouseenter', stopAutoPlay);
   track.addEventListener('mouseleave', startAutoPlay);
-  
+
   // Initialize Carousel
   updateResponsiveCounts();
   setupIndicators();
   goToSlide(0);
   startAutoPlay();
-  
+
   window.addEventListener('resize', () => {
     updateResponsiveCounts();
     setupIndicators();
@@ -593,7 +666,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const counterSection = document.getElementById('aboutStats');
   const counters = document.querySelectorAll('.stat-number');
   let animationTriggered = false;
-  
+
   const countUp = () => {
     counters.forEach(counter => {
       const target = parseFloat(counter.getAttribute('data-target'));
@@ -601,33 +674,33 @@ document.addEventListener('DOMContentLoaded', () => {
       const duration = 2000; // Total count duration in ms
       const start = 0;
       let startTime = null;
-      
+
       const animate = (currentTime) => {
         if (!startTime) startTime = currentTime;
         const progress = Math.min((currentTime - startTime) / duration, 1);
-        
+
         // Easing function: easeOutQuad
         const ease = progress * (2 - progress);
-        
+
         const currentValue = start + ease * (target - start);
-        
+
         if (isDecimal) {
           counter.textContent = currentValue.toFixed(1);
         } else {
           counter.textContent = Math.floor(currentValue);
         }
-        
+
         if (progress < 1) {
           requestAnimationFrame(animate);
         } else {
           counter.textContent = target; // Ensure exact final value is set
         }
       };
-      
+
       requestAnimationFrame(animate);
     });
   };
-  
+
   const counterObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting && !animationTriggered) {
@@ -636,7 +709,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }, { threshold: 0.3 });
-  
+
   if (counterSection) {
     counterObserver.observe(counterSection);
   }
@@ -645,7 +718,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 11. SCROLL-TO-TOP BUTTON
   // ==========================================================================
   const scrollToTopBtn = document.getElementById('scrollToTop');
-  
+
   window.addEventListener('scroll', () => {
     if (window.scrollY > 400) {
       scrollToTopBtn.classList.add('visible');
@@ -653,7 +726,7 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollToTopBtn.classList.remove('visible');
     }
   });
-  
+
   scrollToTopBtn.addEventListener('click', () => {
     window.scrollTo({
       top: 0,
@@ -666,24 +739,24 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================================================
   const form = document.getElementById('enquiryForm');
   const successMessage = document.getElementById('successMessage');
-  
+
   const errName = document.getElementById('errName');
   const errPhone = document.getElementById('errPhone');
   const errEmail = document.getElementById('errEmail');
   const errService = document.getElementById('errService');
-  
+
   const successClientName = document.getElementById('successClientName');
   const successClientPhone = document.getElementById('successClientPhone');
-  
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    
+
     // Reset errors
     const inputs = form.querySelectorAll('input, select');
     inputs.forEach(el => el.classList.remove('invalid'));
     const errorSpans = [errName, errPhone, errEmail, errService];
     errorSpans.forEach(span => { span.style.display = 'none'; span.textContent = ''; });
-    
+
     // Read values
     const name = document.getElementById('formName').value.trim();
     const phone = document.getElementById('formPhone').value.trim();
@@ -692,12 +765,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const service = document.getElementById('formService').value;
     const budget = document.getElementById('formBudget').value;
     const message = document.getElementById('formMessage').value.trim();
-    
+
     const propertyTypeEl = form.querySelector('input[name="property_type"]:checked');
     const propertyType = propertyTypeEl ? propertyTypeEl.value : 'N/A';
-    
+
     let isValid = true;
-    
+
     // 1. Validate Name
     if (!name) {
       document.getElementById('formName').classList.add('invalid');
@@ -705,7 +778,7 @@ document.addEventListener('DOMContentLoaded', () => {
       errName.style.display = 'block';
       isValid = false;
     }
-    
+
     // 2. Validate Phone (exactly 10 digits after stripping +91 or leading zeros/non-digits)
     // Strip leading +91, 91, then keep only digits
     let cleanedPhone = phone.replace(/^(\+91|91)/, '').replace(/\D/g, '');
@@ -720,7 +793,7 @@ document.addEventListener('DOMContentLoaded', () => {
       errPhone.style.display = 'block';
       isValid = false;
     }
-    
+
     // 3. Validate Email (Optional, but checks pattern if typed)
     if (email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -731,7 +804,7 @@ document.addEventListener('DOMContentLoaded', () => {
         isValid = false;
       }
     }
-    
+
     // 4. Validate Service Dropdown
     if (!service) {
       document.getElementById('formService').classList.add('invalid');
@@ -739,7 +812,7 @@ document.addEventListener('DOMContentLoaded', () => {
       errService.style.display = 'block';
       isValid = false;
     }
-    
+
     if (isValid) {
       // Save enquiry to MongoDB via API
       fetch(`${API_BASE}/leads/enquiry`, {
@@ -756,16 +829,16 @@ document.addEventListener('DOMContentLoaded', () => {
           message
         })
       })
-      .then(res => res.json())
-      .then(data => console.log('Enquiry logged to MongoDB:', data))
-      .catch(err => console.error('Failed to log enquiry to MongoDB:', err));
+        .then(res => res.json())
+        .then(data => console.log('Enquiry logged to MongoDB:', data))
+        .catch(err => console.error('Failed to log enquiry to MongoDB:', err));
 
       // Hide form and render Success panel
       form.style.display = 'none';
       successClientName.textContent = name;
       successClientPhone.textContent = `+91-${cleanedPhone}`;
       successMessage.style.display = 'block';
-      
+
       // Construct structured WhatsApp message detail blocks
       let waText = `New Website Enquiry!\n\n`;
       waText += `Name: ${name}\n`;
@@ -776,13 +849,13 @@ document.addEventListener('DOMContentLoaded', () => {
       waText += `Property Type: ${propertyType}\n`;
       if (budget) waText += `Budget: ${budget}\n`;
       if (message) waText += `Message: ${message}`;
-      
+
       const encodedWaText = encodeURIComponent(waText);
       const waURL = `https://wa.me/917992453466?text=${encodedWaText}`;
-      
+
       // Update success WhatsApp button link
       document.getElementById('successWaBtn').href = waURL;
-      
+
       // Open WhatsApp link silently in a new tab
       window.open(waURL, '_blank', 'noopener,noreferrer');
     } else {
@@ -798,7 +871,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 13. SCROLL TRIGGERED FADE-IN ANIMATIONS
   // ==========================================================================
   const animElements = document.querySelectorAll('.animate-on-scroll');
-  
+
   const animObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -806,7 +879,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }, { threshold: 0.15 });
-  
+
   animElements.forEach(el => animObserver.observe(el));
 
   // ==========================================================================
@@ -817,14 +890,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const loginModalOverlay = document.getElementById('loginModalOverlay');
   const navLoginBtn = document.getElementById('navLoginBtn');
   const mobileLoginBtn = document.getElementById('mobileLoginBtn');
-  
+
   const tabLoginBtn = document.getElementById('tabLoginBtn');
   const tabRegisterBtn = document.getElementById('tabRegisterBtn');
-  
+
   const loginForm = document.getElementById('loginForm');
   const registerForm = document.getElementById('registerForm');
   const loggedInPanel = document.getElementById('loggedInPanel');
-  
+
   const logoutBtn = document.getElementById('logoutBtn');
   const userNameDisplay = document.getElementById('userNameDisplay');
   const userEmailDisplay = document.getElementById('userEmailDisplay');
@@ -884,7 +957,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Update modal views based on active session
   const updateModalView = () => {
     const activeUser = JSON.parse(localStorage.getItem('ujjwal_user'));
-    
+
     // Clear error flags
     const errors = loginModal.querySelectorAll('.error-msg');
     errors.forEach(e => { e.textContent = ''; e.style.display = 'none'; });
@@ -895,17 +968,17 @@ document.addEventListener('DOMContentLoaded', () => {
       // Hide tabs
       if (tabLoginBtn) tabLoginBtn.style.display = 'none';
       if (tabRegisterBtn) tabRegisterBtn.style.display = 'none';
-      
+
       loginForm.classList.remove('active');
       registerForm.classList.remove('active');
       loggedInPanel.classList.add('active');
-      
+
       // Populate details
       if (userNameDisplay) userNameDisplay.textContent = activeUser.name;
       if (userEmailDisplay) userEmailDisplay.textContent = activeUser.email;
       if (userPhoneDisplay) userPhoneDisplay.textContent = `+91 ${activeUser.phone}`;
       if (userProjectDisplay) userProjectDisplay.textContent = activeUser.project;
-      
+
       // Update header nav buttons
       if (navLoginBtn) {
         navLoginBtn.innerHTML = `<i class="ph ph-user-circle"></i> <span class="login-btn-text">Hi, ${activeUser.name.split(' ')[0]}</span>`;
@@ -921,9 +994,9 @@ document.addEventListener('DOMContentLoaded', () => {
         tabLoginBtn.click();
       }
       if (tabRegisterBtn) tabRegisterBtn.style.display = 'block';
-      
+
       loggedInPanel.classList.remove('active');
-      
+
       // Restore header buttons
       if (navLoginBtn) {
         navLoginBtn.innerHTML = `<i class="ph ph-user"></i> <span class="login-btn-text">Login</span>`;
@@ -939,20 +1012,20 @@ document.addEventListener('DOMContentLoaded', () => {
   if (registerForm) {
     registerForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      
+
       const nameInput = document.getElementById('regName');
       const phoneInput = document.getElementById('regPhone');
       const emailInput = document.getElementById('regEmail');
       const passInput = document.getElementById('regPassword');
       const projectSelect = document.getElementById('regProject');
-      
+
       const errName = document.getElementById('errRegName');
       const errPhone = document.getElementById('errRegPhone');
       const errEmail = document.getElementById('errRegEmail');
       const errPass = document.getElementById('errRegPassword');
-      
+
       let valid = true;
-      
+
       // Reset errors
       [nameInput, phoneInput, emailInput, passInput].forEach(inp => inp.classList.remove('invalid'));
       [errName, errPhone, errEmail, errPass].forEach(er => { er.textContent = ''; er.style.display = 'none'; });
@@ -1005,55 +1078,55 @@ document.addEventListener('DOMContentLoaded', () => {
             project: projectSelect.value
           })
         })
-        .then(response => response.json().then(data => ({ status: response.status, data })))
-        .then(({ status, data }) => {
-          submitBtn.disabled = false;
-          submitBtn.textContent = originalText;
+          .then(response => response.json().then(data => ({ status: response.status, data })))
+          .then(({ status, data }) => {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
 
-          if (status === 201) {
-            localStorage.setItem('ujjwal_user', JSON.stringify(data.user));
-            updateModalView();
-            
-            // Populate quote form fields
-            const serviceMap = {
-              'Residential': 'Interior Design',
-              'Commercial': 'Office/Commercial Interior',
-              '3D Visualization': '3D Design & Visualization',
-              'Construction': 'Building Construction'
-            };
-            const mappedService = serviceMap[data.user.project];
-            const quoteSelect = document.getElementById('formService');
-            const quoteNameInput = document.getElementById('formName');
-            const quotePhoneInput = document.getElementById('formPhone');
-            const quoteEmailInput = document.getElementById('formEmail');
-            
-            if (quoteSelect && mappedService) quoteSelect.value = mappedService;
-            if (quoteNameInput) quoteNameInput.value = data.user.name;
-            if (quotePhoneInput) quotePhoneInput.value = data.user.phone;
-            if (quoteEmailInput) quoteEmailInput.value = data.user.email;
-          } else {
-            // Show error returned from server
-            if (data.error && data.error.toLowerCase().includes('email')) {
-              emailInput.classList.add('invalid');
-              errEmail.textContent = data.error;
-              errEmail.style.display = 'block';
-            } else if (data.error && data.error.toLowerCase().includes('phone')) {
-              phoneInput.classList.add('invalid');
-              errPhone.textContent = data.error;
-              errPhone.style.display = 'block';
+            if (status === 201) {
+              localStorage.setItem('ujjwal_user', JSON.stringify(data.user));
+              updateModalView();
+
+              // Populate quote form fields
+              const serviceMap = {
+                'Residential': 'Interior Design',
+                'Commercial': 'Office/Commercial Interior',
+                '3D Visualization': '3D Design & Visualization',
+                'Construction': 'Building Construction'
+              };
+              const mappedService = serviceMap[data.user.project];
+              const quoteSelect = document.getElementById('formService');
+              const quoteNameInput = document.getElementById('formName');
+              const quotePhoneInput = document.getElementById('formPhone');
+              const quoteEmailInput = document.getElementById('formEmail');
+
+              if (quoteSelect && mappedService) quoteSelect.value = mappedService;
+              if (quoteNameInput) quoteNameInput.value = data.user.name;
+              if (quotePhoneInput) quotePhoneInput.value = data.user.phone;
+              if (quoteEmailInput) quoteEmailInput.value = data.user.email;
             } else {
-              errPass.textContent = data.error || 'Registration failed. Please try again.';
-              errPass.style.display = 'block';
+              // Show error returned from server
+              if (data.error && data.error.toLowerCase().includes('email')) {
+                emailInput.classList.add('invalid');
+                errEmail.textContent = data.error;
+                errEmail.style.display = 'block';
+              } else if (data.error && data.error.toLowerCase().includes('phone')) {
+                phoneInput.classList.add('invalid');
+                errPhone.textContent = data.error;
+                errPhone.style.display = 'block';
+              } else {
+                errPass.textContent = data.error || 'Registration failed. Please try again.';
+                errPass.style.display = 'block';
+              }
             }
-          }
-        })
-        .catch(err => {
-          submitBtn.disabled = false;
-          submitBtn.textContent = originalText;
-          console.error('Registration API error:', err);
-          errPass.textContent = 'Server connection error. Please try again.';
-          errPass.style.display = 'block';
-        });
+          })
+          .catch(err => {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+            console.error('Registration API error:', err);
+            errPass.textContent = 'Server connection error. Please try again.';
+            errPass.style.display = 'block';
+          });
       }
     });
   }
@@ -1062,12 +1135,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (loginForm) {
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      
+
       const emailInput = document.getElementById('loginEmail');
       const passInput = document.getElementById('loginPassword');
       const errEmail = document.getElementById('errLoginEmail');
       const errPass = document.getElementById('errLoginPassword');
-      
+
       emailInput.classList.remove('invalid');
       passInput.classList.remove('invalid');
       errEmail.textContent = ''; errEmail.style.display = 'none';
@@ -1087,44 +1160,44 @@ document.addEventListener('DOMContentLoaded', () => {
           password: passInput.value
         })
       })
-      .then(response => response.json().then(data => ({ status: response.status, data })))
-      .then(({ status, data }) => {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
+        .then(response => response.json().then(data => ({ status: response.status, data })))
+        .then(({ status, data }) => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
 
-        if (status === 200) {
-          localStorage.setItem('ujjwal_user', JSON.stringify(data.user));
-          updateModalView();
-          
-          // Populate quote form fields
-          const quoteNameInput = document.getElementById('formName');
-          const quotePhoneInput = document.getElementById('formPhone');
-          const quoteEmailInput = document.getElementById('formEmail');
-          if (quoteNameInput) quoteNameInput.value = data.user.name;
-          if (quotePhoneInput) quotePhoneInput.value = data.user.phone;
-          if (quoteEmailInput) quoteEmailInput.value = data.user.email;
-          
-          closeModal();
-        } else {
-          // Show error from server
-          if (data.error && data.error.toLowerCase().includes('password')) {
-            passInput.classList.add('invalid');
-            errPass.textContent = data.error;
-            errPass.style.display = 'block';
+          if (status === 200) {
+            localStorage.setItem('ujjwal_user', JSON.stringify(data.user));
+            updateModalView();
+
+            // Populate quote form fields
+            const quoteNameInput = document.getElementById('formName');
+            const quotePhoneInput = document.getElementById('formPhone');
+            const quoteEmailInput = document.getElementById('formEmail');
+            if (quoteNameInput) quoteNameInput.value = data.user.name;
+            if (quotePhoneInput) quotePhoneInput.value = data.user.phone;
+            if (quoteEmailInput) quoteEmailInput.value = data.user.email;
+
+            closeModal();
           } else {
-            emailInput.classList.add('invalid');
-            errEmail.textContent = data.error || 'Incorrect Email/Phone or Password.';
-            errEmail.style.display = 'block';
+            // Show error from server
+            if (data.error && data.error.toLowerCase().includes('password')) {
+              passInput.classList.add('invalid');
+              errPass.textContent = data.error;
+              errPass.style.display = 'block';
+            } else {
+              emailInput.classList.add('invalid');
+              errEmail.textContent = data.error || 'Incorrect Email/Phone or Password.';
+              errEmail.style.display = 'block';
+            }
           }
-        }
-      })
-      .catch(err => {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-        console.error('Login API error:', err);
-        errPass.textContent = 'Server connection error. Please try again.';
-        errPass.style.display = 'block';
-      });
+        })
+        .catch(err => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+          console.error('Login API error:', err);
+          errPass.textContent = 'Server connection error. Please try again.';
+          errPass.style.display = 'block';
+        });
     });
   }
 
@@ -1136,7 +1209,7 @@ document.addEventListener('DOMContentLoaded', () => {
       closeModal();
     });
   }
-  
+
   // Initialize user status view on load
   updateModalView();
 
@@ -1214,7 +1287,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       typingDiv.remove();
       const botResponse = getAiResponse(text);
-      
+
       const assistantMsgDiv = document.createElement('div');
       assistantMsgDiv.className = 'ai-message assistant';
       assistantMsgDiv.innerHTML = `<div class="message-content">${formatMarkdown(botResponse)}</div>`;
@@ -1232,9 +1305,9 @@ document.addEventListener('DOMContentLoaded', () => {
           userId: activeUser ? activeUser.email : 'guest'
         })
       })
-      .then(res => res.json())
-      .then(data => console.log('Chat logged to MongoDB:', data))
-      .catch(err => console.error('Failed to log chat to MongoDB:', err));
+        .then(res => res.json())
+        .then(data => console.log('Chat logged to MongoDB:', data))
+        .catch(err => console.error('Failed to log chat to MongoDB:', err));
     }, 1200);
   };
 
@@ -1263,12 +1336,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // smart heuristic bot answers
   const getAiResponse = (input) => {
     const raw = input.toLowerCase();
-    
+
     // Greetings
     if (raw.includes('hello') || raw.includes('hi') || raw.includes('hey') || raw.includes('namaste')) {
       return "Hello! How can Ujjwal Interior design helper assist you today? Ask me about costs, ceiling designs, materials, or our office location!";
     }
-    
+
     // Office Location / Address
     if (raw.includes('location') || raw.includes('office') || raw.includes('address') || raw.includes('kahan') || raw.includes('where')) {
       return "Our Dhanbad office is located at:\n\n**Shop No. 301, Equinox Plaza, Opposite Royal Enfield Showroom, Govindpur Road, Saraidhela, Dhanbad – 828127, Jharkhand**.\n\nAap contact page par direct Google Maps direction bhi check kar sakte hain!";
@@ -1283,7 +1356,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (raw.includes('cost') || raw.includes('budget') || raw.includes('price') || raw.includes('estimate') || raw.includes('2bhk') || raw.includes('3bhk') || raw.includes('kitna') || raw.includes('paisa')) {
       let size = "3BHK";
       if (raw.includes('2bhk')) size = "2BHK";
-      
+
       return `Dhanbad me ek standard **${size} home** ke interior design ka cost design requirements par depend karta hai:\n\n1. **Essential Package** (Modular Kitchen, Wardrobes, Basic POP False Ceiling): **₹1.5 Lakhs – ₹3 Lakhs**\n2. **Premium Package** (Designer False Ceilings, Custom TV units, Premium Wall painting, Lighting, Wallpaper): **₹3 Lakhs – ₹6 Lakhs**\n3. **Luxury Package** (Full 3D visualization, Premium Veneer/Acrylic finish, Italian marble styling, Automation): **₹6 Lakhs+**\n\nEk exact customized budget sheet ke liye aap niche enquiry form me details fill kar sakte hain ya WhatsApp par chat karein!`;
     }
 
