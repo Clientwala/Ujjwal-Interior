@@ -118,6 +118,9 @@ section {
 /* Section Titles */
 .section-header {
   margin-bottom: 60px;
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .section-label {
@@ -129,6 +132,7 @@ section {
   text-transform: uppercase;
   display: block;
   margin-bottom: 12px;
+  word-break: break-word;
 }
 
 .section-title {
@@ -137,12 +141,18 @@ section {
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 16px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .section-subtitle {
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 1px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 /* Buttons */
@@ -210,6 +220,8 @@ section {
   border-bottom: 1px solid transparent;
   transition: var(--transition-smooth);
   padding: 24px 0;
+  /* Ensure header always shows above hero */
+  isolation: isolate;
 }
 
 .site-header.scrolled {
@@ -2209,6 +2221,10 @@ body.menu-open {
 
 /* Tablet (1150px) */
 @media screen and (max-width: 1150px) {
+  .site-header {
+    z-index: 1001 !important;
+  }
+
   .hamburger {
     display: block;
   }
@@ -2920,7 +2936,9 @@ body.menu-open {
   position: relative;
   width: 100%;
   max-width: 440px;
-  background: rgba(26, 26, 26, 0.85);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: rgba(26, 26, 26, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border);
@@ -2931,6 +2949,9 @@ body.menu-open {
   transform: scale(0.9);
   opacity: 0;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  /* Custom scrollbar for modal */
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) transparent;
 }
 
 .login-modal.open .login-modal-content {
@@ -3377,6 +3398,11 @@ body.menu-open {
 }
 
 @media screen and (max-width: 768px) {
+  /* Global Section Header wrapping on mobile */
+  .section-header {
+    margin-bottom: 36px;
+    max-width: 480px;
+  }
   .catalogue-section .section-header {
     margin-bottom: 12px;
   }
@@ -3396,8 +3422,21 @@ body.menu-open {
     margin-bottom: 6px;
     letter-spacing: 1.5px;
   }
-  .login-modal-content {
-    padding: 30px 20px;
+
+  /* Prevent iOS background zoom issue */
+  .hero {
+    background-attachment: scroll !important;
+  }
+
+  /* Header mobile optimization to prevent overflow */
+  .site-header .whatsapp-btn {
+    display: none !important; /* Hide to prevent header actions overflow */
+  }
+  .nav-actions {
+    gap: 8px !important;
+  }
+  .logo {
+    gap: 6px !important;
   }
   .logo-img {
     width: 38px;
@@ -3406,7 +3445,7 @@ body.menu-open {
     padding: 1.5px;
   }
   .logo-text {
-    font-size: 18px;
+    font-size: 16px !important; /* Slightly smaller for mobile */
   }
   .login-btn-text {
     display: none;
@@ -3425,18 +3464,101 @@ body.menu-open {
   .nav-login-btn span {
     display: none;
   }
+
+  /* Hide floating buttons when mobile navigation menu is open */
+  body.menu-open #aiChatToggle {
+    display: none !important;
+  }
+  body.menu-open .floating-wa {
+    display: none !important;
+  }
+
+  /* AI Assistant mobile visibility */
+  .floating-ai {
+    display: flex !important;
+    bottom: 20px !important;
+    left: 16px !important;
+    width: 52px !important;
+    height: 52px !important;
+    z-index: 9999 !important;
+  }
+  .pulse-ring-ai {
+    width: 52px !important;
+    height: 52px !important;
+    top: -2px !important;
+    left: -2px !important;
+  }
+
+  /* Login / Register Modal responsiveness */
+  .login-modal {
+    padding: 12px;
+    align-items: flex-start;
+    padding-top: 40px;
+  }
+  .login-modal-content {
+    padding: 28px 18px;
+    max-height: 85vh;
+    overflow-y: auto;
+    width: 100%;
+  }
+  .login-modal-close {
+    top: 14px !important;
+    right: 14px !important;
+    font-size: 20px !important;
+  }
+  .login-tabs {
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .login-tab {
+    font-size: 14px;
+  }
+  .modal-title {
+    font-size: 20px;
+  }
+  .modal-subtitle {
+    font-size: 12px;
+    margin-bottom: 16px;
+  }
+  .form-group input[type="text"],
+  .form-group input[type="tel"],
+  .form-group input[type="email"],
+  .form-group input[type="password"],
+  .form-group select {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+  .user-details-card {
+    padding: 14px;
+  }
+  .user-details-card p {
+    flex-direction: column;
+    gap: 2px;
+    font-size: 13px;
+  }
+  .user-actions-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .user-actions-row .btn {
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 480px) {
+  .section-header {
+    margin-bottom: 24px;
+    max-width: 300px;
+  }
   .catalogue-section .section-header {
     margin-bottom: 8px;
   }
   .catalogue-section .section-title {
-    font-size: 22px !important;
+    font-size: 20px !important;
     line-height: 1.2;
   }
   .catalogue-section .section-subtitle {
-    font-size: 12px !important;
+    font-size: 11px !important;
     line-height: 1.4;
   }
   .catalogue-section .section-label {
