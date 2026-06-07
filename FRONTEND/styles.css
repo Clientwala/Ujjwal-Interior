@@ -35,6 +35,8 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px; /* Offset for sticky navbar */
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
@@ -42,6 +44,7 @@ body {
   background-color: var(--white);
   color: var(--dark);
   overflow-x: hidden;
+  max-width: 100%;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
@@ -2421,8 +2424,13 @@ body.menu-open {
   }
 
   .about-img-container {
-    padding-right: 0;
+    padding-right: 12px;
+    padding-bottom: 12px;
     margin-bottom: 24px;
+  }
+  .about-img-container .gold-offset-frame {
+    top: 12px;
+    left: 12px;
   }
   
   .about-img {
@@ -3486,11 +3494,30 @@ body.menu-open {
   }
 
   /* Hide floating buttons when mobile navigation menu is open */
-  body.menu-open #aiChatToggle {
+  body.menu-open #aiChatToggle,
+  body.menu-open .floating-wa,
+  body.menu-open .scroll-to-top {
     display: none !important;
   }
-  body.menu-open .floating-wa {
-    display: none !important;
+
+  /* WhatsApp & Scroll-To-Top mobile responsiveness */
+  .floating-wa {
+    right: 16px !important;
+    bottom: 20px !important;
+    width: 52px !important;
+    height: 52px !important;
+    font-size: 28px !important;
+  }
+  .floating-wa .pulse-ring {
+    border-width: 2px !important;
+  }
+  
+  .scroll-to-top {
+    right: 16px !important;
+    bottom: 84px !important;
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 16px !important;
   }
 
   /* AI Assistant mobile visibility */
