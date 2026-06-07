@@ -19,11 +19,7 @@
     <div class="container nav-container">
       <!-- Left: Logo -->
       <a href="#home" class="logo">
-        <svg class="logo-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- 8-pointed compass rose in gold -->
-          <path d="M12 2L14 10L22 12L14 14L12 22L10 14L2 12L10 10L12 2Z" fill="#C9A84C"/>
-          <circle cx="12" cy="12" r="2.5" fill="#1a1a1a"/>
-        </svg>
+        <img src="./ASSET/ujjwal interior logo.png" alt="Ujjwal Interior Logo" class="logo-img" />
         <span class="logo-text">Ujjwal Interior</span>
       </a>
 
@@ -38,9 +34,15 @@
         <a href="#contact" class="nav-link">Contact</a>
       </nav>
 
-      <!-- Right: WhatsApp CTA Button -->
+      <!-- Right: Actions -->
       <div class="nav-actions">
-        <a href="https://wa.me/919972815385" target="_blank" rel="noopener noreferrer" class="whatsapp-btn">
+        <!-- User Login Button -->
+        <button id="navLoginBtn" class="nav-login-btn" aria-label="User Login / Register" title="Login or Register">
+          <i class="ph ph-user"></i>
+          <span class="login-btn-text">Login</span>
+        </button>
+
+        <a href="https://wa.me/917992453466" target="_blank" rel="noopener noreferrer" class="whatsapp-btn">
           <i class="ph ph-whatsapp-logo"></i>
           <span>WhatsApp Us</span>
         </a>
@@ -64,7 +66,13 @@
       <a href="#catalogue" class="mobile-nav-link">Catalogue</a>
       <a href="#testimonials" class="mobile-nav-link">Testimonials</a>
       <a href="#contact" class="mobile-nav-link">Contact</a>
-      <a href="https://wa.me/919972815385" target="_blank" rel="noopener noreferrer" class="whatsapp-btn mobile-whatsapp-btn">
+      
+      <!-- Mobile Login Link -->
+      <a href="#" id="mobileLoginBtn" class="mobile-nav-link mobile-login-link">
+        <i class="ph ph-user"></i> <span>Login / Profile</span>
+      </a>
+
+      <a href="https://wa.me/917992453466" target="_blank" rel="noopener noreferrer" class="whatsapp-btn mobile-whatsapp-btn">
         <i class="ph ph-whatsapp-logo"></i>
         <span>WhatsApp Us</span>
       </a>
@@ -543,7 +551,7 @@
         <div class="catalogue-search-wrapper">
           <div class="search-input-container">
             <i class="ph ph-magnifying-glass search-icon"></i>
-            <input type="text" id="catalogueSearch" placeholder="Search across all 37 services (e.g. wall painting, false ceiling, 3D floor plan...)" />
+            <input type="text" id="catalogueSearch" placeholder="Search all 37 services..." />
             <button id="clearSearch" aria-label="Clear Search"><i class="ph ph-x"></i></button>
           </div>
         </div>
@@ -635,7 +643,7 @@
                   <p class="cat-service-desc">Transform your living room into a vibrant statement of your personality with our expert wall painting services. We use premium-grade paints with customized color consultations, seamless finishes, and zero-odor formulations for a flawless result.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Wall Painting (Living/Bedroom/Kitchen/Bathroom/Exterior)" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%20Living%20Room%20Wall%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%20Living%20Room%20Wall%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -646,7 +654,7 @@
                   <p class="cat-service-desc">Create your perfect sanctuary with professional bedroom wall painting that combines color psychology with impeccable craftsmanship. Our team ensures thorough surface preparation, moisture-resistant coating, and a smooth, long-lasting finish.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Wall Painting (Living/Bedroom/Kitchen/Bathroom/Exterior)" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%20Bedroom%20Wall%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%20Bedroom%20Wall%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -657,7 +665,7 @@
                   <p class="cat-service-desc">Protect and beautify your property's exterior with weather-resistant, UV-stable paints applied by our skilled professionals. We handle complete surface preparation, crack filling, primer coating, and final inspection for results that last years.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Wall Painting (Living/Bedroom/Kitchen/Bathroom/Exterior)" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%20Exterior%20Wall%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%20Exterior%20Wall%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -668,7 +676,7 @@
                   <p class="cat-service-desc">Elevate every interior wall into a design element with our comprehensive wall painting solutions — from solid tones to textures, feature walls, and decorative finishes tailored to your aesthetic vision.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Wall Painting (Living/Bedroom/Kitchen/Bathroom/Exterior)" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%20Interior%20Wall%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%20Interior%20Wall%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -679,7 +687,7 @@
                   <p class="cat-service-desc">Refresh your kitchen with specialized moisture-resistant, grease-repellent wall paints designed for high-activity cooking environments. Our finish is easy to clean, heat-resistant, and available in hundreds of custom shades.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Wall Painting (Living/Bedroom/Kitchen/Bathroom/Exterior)" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%20Kitchen%20Wall%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%20Kitchen%20Wall%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -690,7 +698,7 @@
                   <p class="cat-service-desc">Revitalize your bathroom with premium waterproof, anti-fungal wall coatings engineered specifically for humid environments. We ensure complete adhesion testing and a professional finish that resists peeling and mold.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Wall Painting (Living/Bedroom/Kitchen/Bathroom/Exterior)" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%20Bathroom%20Wall%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%20Bathroom%20Wall%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -701,7 +709,7 @@
                   <p class="cat-service-desc">Dramatically enhance your dining room's ambiance with carefully chosen color palettes and expert application techniques. Our team creates atmospheres ranging from warm and intimate to bright and contemporary.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Wall Painting (Living/Bedroom/Kitchen/Bathroom/Exterior)" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%20Dining%20Room%20Wall%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%20Dining%20Room%20Wall%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -712,7 +720,7 @@
                   <p class="cat-service-desc">Breathe new life into wooden furniture, doors, and fixtures with our specialized wood painting and polishing services. We use premium wood-compatible paints, stains, and lacquers for a rich, durable finish.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Wall Painting (Living/Bedroom/Kitchen/Bathroom/Exterior)" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%20Wood%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%20Wood%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -723,7 +731,7 @@
                   <p class="cat-service-desc">Protect and beautify all metal surfaces with our anti-rust, weather-resistant metal painting service. We apply industrial-grade primers and topcoats for structures, gates, grilles, and decorative metalwork.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Wall Painting (Living/Bedroom/Kitchen/Bathroom/Exterior)" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%20Metal%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%20Metal%20Painting" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -735,7 +743,7 @@
                   <p class="cat-service-desc">Comprehensive residential interior design that transforms your home into a personalized sanctuary — seamlessly blending your lifestyle, preferences, and budget into spaces that are both beautiful and deeply functional.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Interior Design" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Residence" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Residence" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -746,7 +754,7 @@
                   <p class="cat-service-desc">We design bedrooms as private retreats — carefully curating furniture placement, lighting layers, storage solutions, and color schemes to create spaces that promote rest, comfort, and personal expression.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Interior Design" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Bedroom" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Bedroom" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -757,7 +765,7 @@
                   <p class="cat-service-desc">Stylish and functional dining room design that makes every meal an experience — from statement lighting and furniture selection to flooring, wall treatments, and spatial flow optimization.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Interior Design" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Dining%20Room" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Dining%20Room" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -768,7 +776,7 @@
                   <p class="cat-service-desc">Space-smart interior design for apartments that maximizes every square foot through strategic furniture selection, built-in storage solutions, multi-functional layouts, and cohesive design language.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Interior Design" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Apartment" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Apartment" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -779,7 +787,7 @@
                   <p class="cat-service-desc">Create welcoming guest rooms that make every visitor feel at home — designed with thoughtful storage, quality bedding zones, neutral yet elegant palettes, and hotel-inspired amenities.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Interior Design" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Guest%20Room" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Guest%20Room" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -790,7 +798,7 @@
                   <p class="cat-service-desc">Functional and inspiring study room designs that enhance focus and productivity — ergonomic furniture planning, optimal lighting design, organized storage systems, and motivating aesthetics.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Interior Design" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Study%20Room" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Study%20Room" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -801,7 +809,7 @@
                   <p class="cat-service-desc">Safe, colorful, and imaginative baby room designs that grow with your child — featuring non-toxic materials, rounded furniture, themed decor, and smart storage solutions for every stage of childhood.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Interior Design" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Baby%20Room" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Baby%20Room" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -812,7 +820,7 @@
                   <p class="cat-service-desc">Custom wardrobe design solutions that maximize storage efficiency while maintaining visual elegance — with compartmentalized sections, pull-out drawers, lighting, and premium finish options.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Wardrobe Design" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Wardrobe" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Wardrobe" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -823,7 +831,7 @@
                   <p class="cat-service-desc">Professional cabin interior decoration creating cozy, efficient workspaces with structured layouts, acoustic considerations, ergonomic furniture, and executive-grade finishes.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Office/Commercial Interior" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20want%20to%20hire%20Interior%20Decorator%20for%20Cabin" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20want%20to%20hire%20Interior%20Decorator%20for%20Cabin" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -834,7 +842,7 @@
                   <p class="cat-service-desc">Elegant, high-impact jewellery shop interiors that showcase your merchandise magnificently — featuring strategic lighting design, premium display fixtures, security-integrated layouts, and a luxurious retail environment that builds customer trust and drives sales.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Jewellery Shop Interior" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20want%20to%20hire%20Interior%20Decorator%20for%20Jewellery%20Shop" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20want%20to%20hire%20Interior%20Decorator%20for%20Jewellery%20Shop" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -845,7 +853,7 @@
                   <p class="cat-service-desc">Transform your staircase into a striking architectural feature with custom railing design, bespoke cladding, integrated step lighting, and material selection that elevates your entire home's aesthetic.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Interior Design" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Staircase" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Staircase" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -856,7 +864,7 @@
                   <p class="cat-service-desc">Statement door designs that make powerful first impressions — from material selection and hardware specification to custom panel designs and smart integration for residential and commercial spaces.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Interior Design" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Door" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Door" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -867,7 +875,7 @@
                   <p class="cat-service-desc">Expert PVC ceiling design and installation offering durability, moisture resistance, and aesthetic flexibility — ideal for kitchens, bathrooms, and commercial spaces requiring low-maintenance elegant ceilings.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="False Ceiling" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20want%20to%20hire%20Interior%20Designer%20for%20PVC%20Ceiling" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20want%20to%20hire%20Interior%20Designer%20for%20PVC%20Ceiling" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -878,7 +886,7 @@
                   <p class="cat-service-desc">Functional, professional communication centre design optimizing workflow, acoustics, and team collaboration — with ergonomic workstation layouts and technology-integrated design solutions.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Office/Commercial Interior" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20want%20to%20hire%20Interior%20Decorator%20for%20Communication%20Centre" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20want%20to%20hire%20Interior%20Decorator%20for%20Communication%20Centre" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -889,7 +897,7 @@
                   <p class="cat-service-desc">Strategic office interior design that boosts productivity, reflects your brand identity, and creates an inspiring work environment — from open-plan layouts to private cabins, reception areas, and boardrooms.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Office/Commercial Interior" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Office" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20want%20to%20hire%20Interior%20Designer%20for%20Office" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -900,7 +908,7 @@
                   <p class="cat-service-desc">Warm, sophisticated wooden interior design bringing natural aesthetics into modern spaces — featuring custom wood paneling, furniture, flooring, and decorative elements crafted for timeless appeal.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Interior Design" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20want%20to%20hire%20Wooden%20Interior%20Designer" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20want%20to%20hire%20Wooden%20Interior%20Designer" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -911,7 +919,7 @@
                   <p class="cat-service-desc">Modern PVC interior solutions offering exceptional durability, water resistance, and design versatility — ideal for contemporary homes and commercial spaces seeking low-maintenance, high-impact interiors.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Interior Design" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20want%20to%20hire%20PVC%20Interior%20Designer" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20want%20to%20hire%20PVC%20Interior%20Designer" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -923,7 +931,7 @@
                   <p class="cat-service-desc">Professional false ceiling design and installation in POP, gypsum, and designer materials — enhancing room acoustics, concealing services, integrating ambient lighting, and dramatically elevating interior aesthetics.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="False Ceiling" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20need%20False%20Ceiling%20Installation%20Services" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20need%20False%20Ceiling%20Installation%20Services" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -935,7 +943,7 @@
                   <p class="cat-service-desc">Photorealistic 3D architectural visualizations that let you walk through your dream space before construction begins — ensuring design accuracy, client alignment, and zero costly surprises during execution.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="3D Design & Visualization" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%203D%20Building%20Design%20Services" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%203D%20Building%20Design%20Services" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -946,7 +954,7 @@
                   <p class="cat-service-desc">Cutting-edge 3D visualization services bringing architectural concepts to life with stunning realism — perfect for presentations, approvals, marketing, and confident decision-making at every project stage.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="3D Design & Visualization" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%20Architectural%203D%20Visualization" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%20Architectural%203D%20Visualization" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -957,7 +965,7 @@
                   <p class="cat-service-desc">Revolutionary BIM design services integrating architectural, structural, and MEP data into a single intelligent model — enabling precise cost estimation, clash detection, and streamlined project coordination.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Architectural Planning" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%20Building%20Information%20Modeling" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%20Building%20Information%20Modeling" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -968,7 +976,7 @@
                   <p class="cat-service-desc">Comprehensive 3D architectural design from concept to detailed working drawings — covering residential homes, commercial buildings, and specialized structures with meticulous attention to function and form.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="3D Design & Visualization" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%203D%20Architectural%20Designing%20Services" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%203D%20Architectural%20Designing%20Services" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -980,7 +988,7 @@
                   <p class="cat-service-desc">Precise, well-thought-out floor plan design for residential and commercial properties — optimizing spatial flow, natural light, ventilation, future expansion provisions, and Vastu compliance.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Architectural Planning" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%20Floor%20Plan%20Design" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%20Floor%20Plan%20Design" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -991,7 +999,7 @@
                   <p class="cat-service-desc">End-to-end architectural design and planning services from site analysis and concept development to working drawings and construction documentation — delivering designs that are both visionary and buildable.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Architectural Planning" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%20Architectural%20Design%20%26%20Planning" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%20Architectural%20Design%20%26%20Planning" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -1002,7 +1010,7 @@
                   <p class="cat-service-desc">Comprehensive construction planning with detailed drawings, specifications, and schedules ensuring your project is executed on time, within budget, and to the highest quality standards.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Building Construction" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%20Construction%20Plan%20Services" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%20Construction%20Plan%20Services" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -1014,7 +1022,7 @@
                   <p class="cat-service-desc">Premium quality building construction using M25+ grade concrete, precision RCC framework, and superior materials — delivering structurally sound, aesthetically refined buildings for every purpose.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Building Construction" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%20General%20Building%20Construction" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%20General%20Building%20Construction" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -1025,7 +1033,7 @@
                   <p class="cat-service-desc">Expert structural steel design and engineering for robust, efficient building frameworks — covering design, detailing, fabrication specifications, and installation oversight for residential and commercial projects.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Building Construction" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%20Structural%20Steel%20Design" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%20Structural%20Steel%20Design" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -1036,7 +1044,7 @@
                   <p class="cat-service-desc">Comprehensive waterproofing solutions including injection waterproofing, bitumen coating, expansion joint sealing, and structural joint protection — eliminating leakage problems permanently with guaranteed, long-lasting results.</p>
                   <div class="cat-card-actions">
                     <a href="#contact" data-service="Waterproofing" class="btn-cat-quote">Get Quote</a>
-                    <a href="https://wa.me/919972815385?text=I%20am%20interested%20in%20Waterproofing%20Services" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
+                    <a href="https://wa.me/917992453466?text=I%20am%20interested%20in%20Waterproofing%20Services" target="_blank" rel="noopener noreferrer" class="btn-cat-wa" aria-label="Inquire via WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>
                   </div>
                 </div>
               </div>
@@ -1325,7 +1333,7 @@
                 <div class="contact-icon-box"><i class="ph ph-phone"></i></div>
                 <div class="contact-detail-text">
                   <h4 class="text-white">Call Us</h4>
-                  <p><a href="tel:+919972815385" class="tel-link">+91-9972815385</a></p>
+                  <p><a href="tel:+917992453466" class="tel-link">+91-7992453466</a></p>
                 </div>
               </li>
               <li>
@@ -1339,7 +1347,7 @@
 
             <!-- WhatsApp Direct Button -->
             <div class="wa-contact-box">
-              <a href="https://wa.me/919972815385?text=Hi%20Ujjwal%20Interior%2C%20I%20visited%20your%20website%20and%20want%20to%20discuss%20my%20interior%20project." target="_blank" rel="noopener noreferrer" class="btn btn-wa-chat">
+              <a href="https://wa.me/917992453466?text=Hi%20Ujjwal%20Interior%2C%20I%20visited%20your%20website%20and%20want%20to%20discuss%20my%20interior%20project." target="_blank" rel="noopener noreferrer" class="btn btn-wa-chat">
                 <i class="ph ph-whatsapp-logo"></i> Chat on WhatsApp
               </a>
             </div>
@@ -1375,7 +1383,7 @@
                 <p class="success-subdesc">
                   Meanwhile, you can also reach us directly via WhatsApp for faster answers.
                 </p>
-                <a href="https://wa.me/919972815385" id="successWaBtn" target="_blank" rel="noopener noreferrer" class="btn btn-wa-chat">
+                <a href="https://wa.me/917992453466" id="successWaBtn" target="_blank" rel="noopener noreferrer" class="btn btn-wa-chat">
                   <i class="ph ph-whatsapp-logo"></i> Message us on WhatsApp
                 </a>
               </div>
@@ -1503,10 +1511,7 @@
         <!-- Column 1: Brand Info -->
         <div class="footer-column brand-col">
           <a href="#home" class="footer-logo">
-            <svg class="logo-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2L14 10L22 12L14 14L12 22L10 14L2 12L10 10L12 2Z" fill="#C9A84C"/>
-              <circle cx="12" cy="12" r="2.5" fill="#111111"/>
-            </svg>
+            <img src="./ASSET/ujjwal interior logo.png" alt="Ujjwal Interior Logo" class="logo-img" />
             <span class="logo-text">Ujjwal Interior</span>
           </a>
           <p class="footer-tagline">"Transforming Spaces. Crafting Dreams."</p>
@@ -1539,14 +1544,14 @@
             <i class="ph ph-map-pin"></i> Shop No. 301, Equinox Plaza, Saraidhela, Dhanbad – 828127
           </p>
           <p class="footer-phone">
-            <i class="ph ph-phone"></i> <a href="tel:+919972815385">+91-9972815385</a>
+            <i class="ph ph-phone"></i> <a href="tel:+917992453466">+91-7992453466</a>
           </p>
           <p class="footer-hours">
             <i class="ph ph-clock"></i> Mon–Sat: 10 AM – 9 PM
           </p>
           
           <div class="footer-ctas">
-            <a href="https://wa.me/919972815385" target="_blank" rel="noopener noreferrer" class="footer-btn btn-wa">
+            <a href="https://wa.me/917992453466" target="_blank" rel="noopener noreferrer" class="footer-btn btn-wa">
               <i class="ph ph-whatsapp-logo"></i> WhatsApp Now
             </a>
             <a href="https://www.justdial.com/Dhanbad/Ujjwal-Interior-Opposite-Royal-Enfield-Showroom-Saraidhela/9999PX326-X326-231228003114-H9K5_BZDET" target="_blank" rel="noopener noreferrer" class="footer-btn btn-jd">
@@ -1569,7 +1574,7 @@
 
   <!-- FLOATING ELEMENTS -->
   <!-- WhatsApp pulsing circle -->
-  <a href="https://wa.me/919972815385?text=Hi%20Ujjwal%20Interior%2C%20I%20want%20to%20discuss%20my%20interior%20project." target="_blank" rel="noopener noreferrer" class="floating-wa" aria-label="Chat with us on WhatsApp" title="Chat with us!">
+  <a href="https://wa.me/917992453466?text=Hi%20Ujjwal%20Interior%2C%20I%20want%20to%20discuss%20my%20interior%20project." target="_blank" rel="noopener noreferrer" class="floating-wa" aria-label="Chat with us on WhatsApp" title="Chat with us!">
     <div class="pulse-ring"></div>
     <i class="ph ph-whatsapp-logo"></i>
   </a>
@@ -1578,6 +1583,147 @@
   <button id="scrollToTop" class="scroll-to-top" aria-label="Scroll to Top" title="Back to Top">
     <i class="ph ph-arrow-up"></i>
   </button>
+
+  <!-- AI Assistant Toggle Button (Left Side) -->
+  <button id="aiChatToggle" class="floating-ai" aria-label="Open AI Assistant" title="Ask AI Assistant">
+    <div class="pulse-ring-ai"></div>
+    <img src="./ASSET/ujjwal interior logo.png" alt="Ujjwal AI Avatar" class="ai-avatar-btn-img" />
+  </button>
+
+  <!-- AI Assistant Chat Panel -->
+  <div id="aiChatPanel" class="ai-chat-panel">
+    <div class="ai-chat-header">
+      <div class="ai-header-info">
+        <img src="./ASSET/ujjwal interior logo.png" alt="Ujjwal AI Logo" class="ai-header-logo-img" />
+        <div>
+          <h4>Ujjwal AI Assistant</h4>
+          <span class="ai-status"><span class="status-dot"></span> Online</span>
+        </div>
+      </div>
+      <button id="closeAiChat" aria-label="Close Chat"><i class="ph ph-x"></i></button>
+    </div>
+    <div class="ai-chat-messages" id="aiChatMessages">
+      <div class="ai-message assistant">
+        <div class="message-content">
+          Hello! I am your **Ujjwal Interior AI Assistant**. How can I help you design your dream space today?
+        </div>
+      </div>
+      <div class="ai-message assistant">
+        <div class="message-content">
+          You can ask me anything about:
+          - 💰 Budget estimates for 2BHK/3BHK in Dhanbad
+          - 🎨 Best colors for your living room
+          - 🗄️ Modular kitchen shapes
+          - 🔲 POP vs PVC False Ceiling
+          - 📅 Project timelines
+        </div>
+      </div>
+    </div>
+    <div class="ai-chat-chips">
+      <button class="ai-chip">3BHK design cost?</button>
+      <button class="ai-chip">POP vs PVC ceiling</button>
+      <button class="ai-chip">Modular kitchen shapes</button>
+      <button class="ai-chip">Where is your office?</button>
+    </div>
+    <form class="ai-chat-input-area" id="aiChatForm">
+      <input type="text" id="aiChatInput" placeholder="Type your question..." required />
+      <button type="submit" id="sendAiMessage" aria-label="Send Message"><i class="ph ph-paper-plane-right"></i></button>
+    </form>
+  </div>
+
+  <!-- LOGIN & REGISTER MODAL -->
+  <div id="loginModal" class="login-modal">
+    <div class="login-modal-overlay" id="loginModalOverlay"></div>
+    <div class="login-modal-content">
+      <button class="login-modal-close" id="closeLoginModal" aria-label="Close Modal"><i class="ph ph-x"></i></button>
+      
+      <div class="login-tabs">
+        <button class="login-tab active" id="tabLoginBtn">Login</button>
+        <button class="login-tab" id="tabRegisterBtn">Register</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" class="login-form-panel active">
+        <h3 class="modal-title font-playfair">Welcome Back</h3>
+        <p class="modal-subtitle">Log in to view your projects and estimates.</p>
+        
+        <div class="form-group">
+          <label for="loginEmail">Email Address / Phone</label>
+          <input type="text" id="loginEmail" placeholder="Enter your email or phone" required />
+          <span class="error-msg" id="errLoginEmail"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required />
+          <span class="error-msg" id="errLoginPassword"></span>
+        </div>
+
+        <button type="submit" class="btn btn-gold btn-block">Log In</button>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form id="registerForm" class="login-form-panel">
+        <h3 class="modal-title font-playfair">Create Account</h3>
+        <p class="modal-subtitle">Get custom designs, 3D estimates, and more.</p>
+
+        <div class="form-group">
+          <label for="regName">Full Name*</label>
+          <input type="text" id="regName" placeholder="Your name" required />
+          <span class="error-msg" id="errRegName"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="regPhone">Phone Number*</label>
+          <input type="tel" id="regPhone" placeholder="10-digit number" required />
+          <span class="error-msg" id="errRegPhone"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="regEmail">Email Address*</label>
+          <input type="email" id="regEmail" placeholder="name@email.com" required />
+          <span class="error-msg" id="errRegEmail"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="regPassword">Password*</label>
+          <input type="password" id="regPassword" placeholder="Minimum 6 characters" required />
+          <span class="error-msg" id="errRegPassword"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="regProject">Interested Project Type</label>
+          <select id="regProject">
+            <option value="Residential">Residential Design</option>
+            <option value="Commercial">Commercial Design</option>
+            <option value="3D Visualization">3D Modeling / Planning</option>
+            <option value="Construction">Civil RCC / Building Construction</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-gold btn-block">Sign Up</button>
+      </form>
+
+      <!-- LOGGED IN VIEW -->
+      <div id="loggedInPanel" class="login-form-panel">
+        <div class="user-welcome-icon"><i class="ph ph-user-circle-gear"></i></div>
+        <h3 class="modal-title font-playfair">Hello, <span id="userNameDisplay">[Name]</span>!</h3>
+        <p class="modal-subtitle">Welcome to your Ujjwal Interior profile.</p>
+        
+        <div class="user-details-card">
+          <p><strong>Registered Email:</strong> <span id="userEmailDisplay">-</span></p>
+          <p><strong>Phone Number:</strong> <span id="userPhoneDisplay">-</span></p>
+          <p><strong>Interested In:</strong> <span id="userProjectDisplay">-</span></p>
+        </div>
+
+        <div class="user-actions-row">
+          <a href="#contact" class="btn btn-gold btn-small" id="userFormBtn">Request 3D Call</a>
+          <button id="logoutBtn" class="btn btn-outline btn-small">Log Out</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <!-- JS Logic Script -->
   <script src="script.js"></script>
