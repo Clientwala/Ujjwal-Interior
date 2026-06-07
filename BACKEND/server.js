@@ -7,6 +7,7 @@ require('dotenv').config();
 const User = require('./models/User');
 const Lead = require('./models/Lead');
 const Chat = require('./models/Chat');
+const { sendInquiryNotification } = require('./services/telegramService');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -150,6 +151,10 @@ app.post('/api/leads/enquiry', async (req, res) => {
 
     const savedLead = await newLead.save();
     
+    // Send Telegram notification (non-blocking background call)
+    // Internal try/catch inside sendInquiryNotification guarantees it will not interrupt lead saving
+    sendInquiryNotification(savedLead);
+
     res.status(201).json({
       message: 'Enquiry saved successfully to MongoDB.',
       leadId: savedLead._id
