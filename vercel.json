@@ -1,6 +1,23 @@
 {
-  "cleanUrls": true,
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/FRONTEND/$1" }
+  "version": 2,
+  "builds": [
+    {
+      "src": "BACKEND/server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "FRONTEND/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "BACKEND/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "FRONTEND/$1"
+    }
   ]
 }

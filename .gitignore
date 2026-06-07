@@ -11,3 +11,10 @@ ehthumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Dependencies & Environment
+node_modules/
+BACKEND/node_modules/
+.env
+BACKEND/.env
+

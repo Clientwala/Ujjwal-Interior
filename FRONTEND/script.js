@@ -1,5 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
   
+  // Backend API Base URI
+  const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+    ? 'http://localhost:5000/api' 
+    : '/api';
+
   // ==========================================================================
   // 1. NAVBAR SCROLL BEHAVIOR
   // ==========================================================================
@@ -736,6 +741,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     if (isValid) {
+      // Save enquiry to MongoDB via API
+      fetch(`${API_BASE}/leads/enquiry`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          phone: cleanedPhone,
+          email,
+          locality,
+          service,
+          propertyType,
+          budget,
+          message
+        })
+      })
+      .then(res => res.json())
+      .then(data => console.log('Enquiry logged to MongoDB:', data))
+      .catch(err => console.error('Failed to log enquiry to MongoDB:', err));
+
       // Hide form and render Success panel
       form.style.display = 'none';
       successClientName.textContent = name;
@@ -964,35 +988,72 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (valid) {
-        const newUser = {
-          name: nameInput.value.trim(),
-          phone: cleanedPhone,
-          email: emailInput.value.trim(),
-          password: passInput.value,
-          project: projectSelect.value
-        };
-        
-        // Save to localStorage
-        localStorage.setItem('ujjwal_user', JSON.stringify(newUser));
-        updateModalView();
-        
-        // Populate quote service input if match found
-        const serviceMap = {
-          'Residential': 'Interior Design',
-          'Commercial': 'Office/Commercial Interior',
-          '3D Visualization': '3D Design & Visualization',
-          'Construction': 'Building Construction'
-        };
-        const mappedService = serviceMap[newUser.project];
-        const quoteSelect = document.getElementById('formService');
-        const quoteNameInput = document.getElementById('formName');
-        const quotePhoneInput = document.getElementById('formPhone');
-        const quoteEmailInput = document.getElementById('formEmail');
-        
-        if (quoteSelect && mappedService) quoteSelect.value = mappedService;
-        if (quoteNameInput) quoteNameInput.value = newUser.name;
-        if (quotePhoneInput) quotePhoneInput.value = newUser.phone;
-        if (quoteEmailInput) quoteEmailInput.value = newUser.email;
+        // Disable signup button
+        const submitBtn = registerForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Registering...';
+
+        fetch(`${API_BASE}/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: nameInput.value.trim(),
+            phone: cleanedPhone,
+            email: emailInput.value.trim(),
+            password: passInput.value,
+            project: projectSelect.value
+          })
+        })
+        .then(response => response.json().then(data => ({ status: response.status, data })))
+        .then(({ status, data }) => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+
+          if (status === 201) {
+            localStorage.setItem('ujjwal_user', JSON.stringify(data.user));
+            updateModalView();
+            
+            // Populate quote form fields
+            const serviceMap = {
+              'Residential': 'Interior Design',
+              'Commercial': 'Office/Commercial Interior',
+              '3D Visualization': '3D Design & Visualization',
+              'Construction': 'Building Construction'
+            };
+            const mappedService = serviceMap[data.user.project];
+            const quoteSelect = document.getElementById('formService');
+            const quoteNameInput = document.getElementById('formName');
+            const quotePhoneInput = document.getElementById('formPhone');
+            const quoteEmailInput = document.getElementById('formEmail');
+            
+            if (quoteSelect && mappedService) quoteSelect.value = mappedService;
+            if (quoteNameInput) quoteNameInput.value = data.user.name;
+            if (quotePhoneInput) quotePhoneInput.value = data.user.phone;
+            if (quoteEmailInput) quoteEmailInput.value = data.user.email;
+          } else {
+            // Show error returned from server
+            if (data.error && data.error.toLowerCase().includes('email')) {
+              emailInput.classList.add('invalid');
+              errEmail.textContent = data.error;
+              errEmail.style.display = 'block';
+            } else if (data.error && data.error.toLowerCase().includes('phone')) {
+              phoneInput.classList.add('invalid');
+              errPhone.textContent = data.error;
+              errPhone.style.display = 'block';
+            } else {
+              errPass.textContent = data.error || 'Registration failed. Please try again.';
+              errPass.style.display = 'block';
+            }
+          }
+        })
+        .catch(err => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+          console.error('Registration API error:', err);
+          errPass.textContent = 'Server connection error. Please try again.';
+          errPass.style.display = 'block';
+        });
       }
     });
   }
@@ -1007,51 +1068,63 @@ document.addEventListener('DOMContentLoaded', () => {
       const errEmail = document.getElementById('errLoginEmail');
       const errPass = document.getElementById('errLoginPassword');
       
-      let valid = true;
-      
       emailInput.classList.remove('invalid');
       passInput.classList.remove('invalid');
       errEmail.textContent = ''; errEmail.style.display = 'none';
       errPass.textContent = ''; errPass.style.display = 'none';
 
-      const savedUser = JSON.parse(localStorage.getItem('ujjwal_user'));
-      
-      if (!savedUser) {
-        emailInput.classList.add('invalid');
-        errEmail.textContent = 'No account found. Please Register first.';
-        errEmail.style.display = 'block';
-        valid = false;
-      } else {
-        const queryVal = emailInput.value.toLowerCase().trim();
-        if (queryVal !== savedUser.email.toLowerCase() && queryVal !== savedUser.phone) {
-          emailInput.classList.add('invalid');
-          errEmail.textContent = 'Incorrect Email or Phone Number.';
-          errEmail.style.display = 'block';
-          valid = false;
-        }
-        
-        if (passInput.value !== savedUser.password) {
-          passInput.classList.add('invalid');
-          errPass.textContent = 'Incorrect password.';
-          errPass.style.display = 'block';
-          valid = false;
-        }
-      }
+      // Disable login button
+      const submitBtn = loginForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Logging In...';
 
-      if (valid && savedUser) {
-        // Authenticated! Just update view
-        updateModalView();
-        
-        // Populate quote form fields
-        const quoteNameInput = document.getElementById('formName');
-        const quotePhoneInput = document.getElementById('formPhone');
-        const quoteEmailInput = document.getElementById('formEmail');
-        if (quoteNameInput) quoteNameInput.value = savedUser.name;
-        if (quotePhoneInput) quotePhoneInput.value = savedUser.phone;
-        if (quoteEmailInput) quoteEmailInput.value = savedUser.email;
-        
-        closeModal();
-      }
+      fetch(`${API_BASE}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          emailOrPhone: emailInput.value.trim(),
+          password: passInput.value
+        })
+      })
+      .then(response => response.json().then(data => ({ status: response.status, data })))
+      .then(({ status, data }) => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+
+        if (status === 200) {
+          localStorage.setItem('ujjwal_user', JSON.stringify(data.user));
+          updateModalView();
+          
+          // Populate quote form fields
+          const quoteNameInput = document.getElementById('formName');
+          const quotePhoneInput = document.getElementById('formPhone');
+          const quoteEmailInput = document.getElementById('formEmail');
+          if (quoteNameInput) quoteNameInput.value = data.user.name;
+          if (quotePhoneInput) quotePhoneInput.value = data.user.phone;
+          if (quoteEmailInput) quoteEmailInput.value = data.user.email;
+          
+          closeModal();
+        } else {
+          // Show error from server
+          if (data.error && data.error.toLowerCase().includes('password')) {
+            passInput.classList.add('invalid');
+            errPass.textContent = data.error;
+            errPass.style.display = 'block';
+          } else {
+            emailInput.classList.add('invalid');
+            errEmail.textContent = data.error || 'Incorrect Email/Phone or Password.';
+            errEmail.style.display = 'block';
+          }
+        }
+      })
+      .catch(err => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+        console.error('Login API error:', err);
+        errPass.textContent = 'Server connection error. Please try again.';
+        errPass.style.display = 'block';
+      });
     });
   }
 
@@ -1147,6 +1220,21 @@ document.addEventListener('DOMContentLoaded', () => {
       assistantMsgDiv.innerHTML = `<div class="message-content">${formatMarkdown(botResponse)}</div>`;
       aiChatMessages.appendChild(assistantMsgDiv);
       scrollToBottom();
+
+      // Log AI conversation to MongoDB
+      const activeUser = JSON.parse(localStorage.getItem('ujjwal_user'));
+      fetch(`${API_BASE}/chats/log`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userQuery: text,
+          botResponse: botResponse,
+          userId: activeUser ? activeUser.email : 'guest'
+        })
+      })
+      .then(res => res.json())
+      .then(data => console.log('Chat logged to MongoDB:', data))
+      .catch(err => console.error('Failed to log chat to MongoDB:', err));
     }, 1200);
   };
 
