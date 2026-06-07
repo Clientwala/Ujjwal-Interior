@@ -252,7 +252,7 @@ section {
 /* Links */
 .nav-links {
   display: flex;
-  gap: 28px;
+  gap: 20px;
 }
 
 .nav-link {
@@ -2207,8 +2207,8 @@ body.menu-open {
    16. RESPONSIVE BREAKPOINTS
    ========================================================================== */
 
-/* Tablet (1024px) */
-@media screen and (max-width: 1024px) {
+/* Tablet (1150px) */
+@media screen and (max-width: 1150px) {
   .hamburger {
     display: block;
   }
@@ -2601,6 +2601,27 @@ body.menu-open {
     text-align: center;
     gap: 10px;
   }
+
+  .btn-cat-quote {
+    flex-grow: 0;
+    width: auto;
+    padding: 8px 16px;
+    font-size: 11px;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+  }
+
+  .footer-links li {
+    margin-bottom: 0;
+  }
+
+  .footer-links a:hover {
+    padding-left: 0;
+  }
 }
 
 /* Mobile Sm (480px) */
@@ -2720,9 +2741,11 @@ body.menu-open {
 
   .btn-cat-quote {
     text-align: center;
-    padding: 7px 10px;
-    font-size: 10px;
+    padding: 7px 14px;
+    font-size: 11px;
     letter-spacing: 0.3px;
+    flex-grow: 0;
+    width: auto;
   }
 
   .btn-cat-wa {
@@ -2790,14 +2813,14 @@ body.menu-open {
 
 /* Circular Logo styling */
 .logo-img {
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1.5px solid var(--gold);
+  border: 2px solid var(--gold);
   flex-shrink: 0;
   background-color: var(--white);
-  padding: 1.5px;
+  padding: 2.5px;
 }
 .logo {
   display: flex;
@@ -2816,17 +2839,30 @@ body.menu-open {
   background: transparent;
   border: 1px solid var(--gold);
   color: var(--gold);
-  padding: 8px 18px;
+  padding: 6px 14px;
   border-radius: 4px;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   cursor: pointer;
   transition: var(--transition-smooth);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+.nav-login-btn i {
+  font-size: 12px;
+}
+
+/* Prevent header overlap on smaller laptop screens */
+@media screen and (max-width: 1200px) {
+  .logo-text {
+    font-size: 19px;
+  }
+  .nav-links {
+    gap: 12px;
+  }
 }
 
 .nav-login-btn:hover {
@@ -3326,7 +3362,7 @@ body.menu-open {
 }
 
 /* Mobile view styling details for catalogue text */
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1150px) {
   .ai-chat-panel {
     bottom: 90px;
     left: 20px;
@@ -3364,8 +3400,10 @@ body.menu-open {
     padding: 30px 20px;
   }
   .logo-img {
-    width: 30px;
-    height: 30px;
+    width: 38px;
+    height: 38px;
+    border-width: 1.5px;
+    padding: 1.5px;
   }
   .logo-text {
     font-size: 18px;
@@ -3374,12 +3412,15 @@ body.menu-open {
     display: none;
   }
   .nav-login-btn {
-    padding: 8px;
+    padding: 6px;
     border-radius: 50%;
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     justify-content: center;
     border-color: var(--gold);
+  }
+  .nav-login-btn i {
+    font-size: 13px;
   }
   .nav-login-btn span {
     display: none;

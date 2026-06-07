@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
       filterCatalogue(category);
       
       // Mobile Tab Centering
-      if (window.innerWidth <= 1024 && categoriesScroll) {
+      if (window.innerWidth <= 1150 && categoriesScroll) {
         const wrapperRect = categoriesScroll.getBoundingClientRect();
         const headerRect = header.getBoundingClientRect();
         const offsetLeft = headerRect.left - wrapperRect.left + categoriesScroll.scrollLeft - (wrapperRect.width / 2) + (headerRect.width / 2);
@@ -420,11 +420,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           });
           
-          // Insert button before actions inside cat-card-body
-          const actions = card.querySelector('.cat-card-actions');
+          // Append button to cardBody (safely inside the body container)
           const cardBody = card.querySelector('.cat-card-body');
-          if (cardBody && actions) {
-            cardBody.insertBefore(btn, actions);
+          if (cardBody) {
+            cardBody.appendChild(btn);
           }
         }
       } else {
@@ -466,7 +465,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const width = window.innerWidth;
     if (width <= 768) {
       visibleCardsCount = 1;
-    } else if (width <= 1024) {
+    } else if (width <= 1150) {
       visibleCardsCount = 2;
     } else {
       visibleCardsCount = 3;
