@@ -539,59 +539,88 @@
           <p class="section-subtitle gold-text">Every service, every space — we do it all.</p>
         </div>
 
+        <!-- Interactive Search Bar -->
+        <div class="catalogue-search-wrapper">
+          <div class="search-input-container">
+            <i class="ph ph-magnifying-glass search-icon"></i>
+            <input type="text" id="catalogueSearch" placeholder="Search across all 37 services (e.g. wall painting, false ceiling, 3D floor plan...)" />
+            <button id="clearSearch" aria-label="Clear Search"><i class="ph ph-x"></i></button>
+          </div>
+        </div>
+
         <div class="catalogue-layout">
           <!-- Left Sidebar: Categories Accordion (Desktop) / Tabs (Mobile) -->
           <aside class="catalogue-sidebar">
-            <div class="catalogue-categories" id="catalogueCategories">
-              
-              <!-- Category 1 -->
-              <div class="category-group">
-                <button class="category-header active" data-cat="painting">
-                  <span>Painting Services</span>
-                  <i class="ph ph-caret-down"></i>
-                </button>
-              </div>
+            <div class="catalogue-categories-wrapper">
+              <div class="catalogue-categories" id="catalogueCategories">
+                
+                <!-- Category 1 -->
+                <div class="category-group">
+                  <button class="category-header active" data-cat="painting">
+                    <div class="cat-header-title">
+                      <i class="ph ph-paint-brush"></i>
+                      <span>Painting Services</span>
+                    </div>
+                    <i class="ph ph-caret-down"></i>
+                  </button>
+                </div>
 
-              <!-- Category 2 -->
-              <div class="category-group">
-                <button class="category-header" data-cat="interior">
-                  <span>Interior Designers</span>
-                  <i class="ph ph-caret-down"></i>
-                </button>
-              </div>
+                <!-- Category 2 -->
+                <div class="category-group">
+                  <button class="category-header" data-cat="interior">
+                    <div class="cat-header-title">
+                      <i class="ph ph-couch"></i>
+                      <span>Interior Designers</span>
+                    </div>
+                    <i class="ph ph-caret-down"></i>
+                  </button>
+                </div>
 
-              <!-- Category 3 -->
-              <div class="category-group">
-                <button class="category-header" data-cat="ceiling">
-                  <span>False Ceiling</span>
-                  <i class="ph ph-caret-down"></i>
-                </button>
-              </div>
+                <!-- Category 3 -->
+                <div class="category-group">
+                  <button class="category-header" data-cat="ceiling">
+                    <div class="cat-header-title">
+                      <i class="ph ph-squares-four"></i>
+                      <span>False Ceiling</span>
+                    </div>
+                    <i class="ph ph-caret-down"></i>
+                  </button>
+                </div>
 
-              <!-- Category 4 -->
-              <div class="category-group">
-                <button class="category-header" data-cat="architectural">
-                  <span>Architectural Services</span>
-                  <i class="ph ph-caret-down"></i>
-                </button>
-              </div>
+                <!-- Category 4 -->
+                <div class="category-group">
+                  <button class="category-header" data-cat="architectural">
+                    <div class="cat-header-title">
+                      <i class="ph ph-buildings"></i>
+                      <span>Architectural Services</span>
+                    </div>
+                    <i class="ph ph-caret-down"></i>
+                  </button>
+                </div>
 
-              <!-- Category 5 -->
-              <div class="category-group">
-                <button class="category-header" data-cat="building-plan">
-                  <span>Building Plan Services</span>
-                  <i class="ph ph-caret-down"></i>
-                </button>
-              </div>
+                <!-- Category 5 -->
+                <div class="category-group">
+                  <button class="category-header" data-cat="building-plan">
+                    <div class="cat-header-title">
+                      <i class="ph ph-article"></i>
+                      <span>Building Plan Services</span>
+                    </div>
+                    <i class="ph ph-caret-down"></i>
+                  </button>
+                </div>
 
-              <!-- Category 6 -->
-              <div class="category-group">
-                <button class="category-header" data-cat="construction">
-                  <span>Construction & Structural</span>
-                  <i class="ph ph-caret-down"></i>
-                </button>
-              </div>
+                <!-- Category 6 -->
+                <div class="category-group">
+                  <button class="category-header" data-cat="construction">
+                    <div class="cat-header-title">
+                      <i class="ph ph-hammer"></i>
+                      <span>Construction & Structural</span>
+                    </div>
+                    <i class="ph ph-caret-down"></i>
+                  </button>
+                </div>
 
+              </div>
             </div>
           </aside>
 

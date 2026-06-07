@@ -216,8 +216,34 @@ document.addEventListener('DOMContentLoaded', () => {
   const catHeaders = document.querySelectorAll('.category-header');
   const catGrid = document.getElementById('catalogueGrid');
   const catCards = document.querySelectorAll('.catalogue-card');
+  const searchInput = document.getElementById('catalogueSearch');
+  const clearSearchBtn = document.getElementById('clearSearch');
+  const categoriesScroll = document.getElementById('catalogueCategories');
+  const categoriesWrapper = document.querySelector('.catalogue-categories-wrapper');
   
+  // Create No Results element
+  const noResultsDiv = document.createElement('div');
+  noResultsDiv.className = 'catalogue-no-results text-center';
+  noResultsDiv.style.display = 'none';
+  noResultsDiv.style.gridColumn = '1 / -1';
+  noResultsDiv.style.padding = '40px 20px';
+  noResultsDiv.innerHTML = `
+    <i class="ph ph-magnifying-glass" style="font-size: 48px; color: var(--gold); margin-bottom: 16px; display: inline-block;"></i>
+    <h4 style="font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; margin-bottom: 8px;">No Services Found</h4>
+    <p style="color: var(--text-muted); font-size: 14px;">Try searching for something else, like "painting", "ceiling", or "kitchen".</p>
+  `;
+  if (catGrid) {
+    catGrid.appendChild(noResultsDiv);
+  }
+
   const filterCatalogue = (category) => {
+    // Clear search query if active
+    if (searchInput && searchInput.value) {
+      searchInput.value = '';
+      if (clearSearchBtn) clearSearchBtn.style.display = 'none';
+    }
+    noResultsDiv.style.display = 'none';
+
     catGrid.style.opacity = '0';
     catGrid.style.transition = 'opacity 0.25s ease';
     
@@ -240,11 +266,161 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const category = header.getAttribute('data-cat');
       filterCatalogue(category);
+      
+      // Mobile Tab Centering
+      if (window.innerWidth <= 1024 && categoriesScroll) {
+        const wrapperRect = categoriesScroll.getBoundingClientRect();
+        const headerRect = header.getBoundingClientRect();
+        const offsetLeft = headerRect.left - wrapperRect.left + categoriesScroll.scrollLeft - (wrapperRect.width / 2) + (headerRect.width / 2);
+        
+        categoriesScroll.scrollTo({
+          left: offsetLeft,
+          behavior: 'smooth'
+        });
+      }
     });
   });
   
   // Load default catalogue cards (painting)
   filterCatalogue('painting');
+
+  // Search filter handler
+  const handleSearch = () => {
+    if (!searchInput) return;
+    const query = searchInput.value.toLowerCase().trim();
+    
+    if (query === '') {
+      if (clearSearchBtn) clearSearchBtn.style.display = 'none';
+      noResultsDiv.style.display = 'none';
+      // Restore currently active category
+      const activeHeader = document.querySelector('.category-header.active');
+      const activeCat = activeHeader ? activeHeader.getAttribute('data-cat') : 'painting';
+      
+      catCards.forEach(card => {
+        if (card.getAttribute('data-category') === activeCat) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      return;
+    }
+    
+    if (clearSearchBtn) clearSearchBtn.style.display = 'flex';
+    
+    // Hide active tabs highlights
+    catHeaders.forEach(h => h.classList.remove('active'));
+    
+    let matchCount = 0;
+    catCards.forEach(card => {
+      const title = card.querySelector('.cat-service-title').textContent.toLowerCase();
+      const desc = card.querySelector('.cat-service-desc').textContent.toLowerCase();
+      
+      if (title.includes(query) || desc.includes(query)) {
+        card.style.display = 'flex';
+        matchCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    
+    if (matchCount === 0) {
+      noResultsDiv.style.display = 'block';
+    } else {
+      noResultsDiv.style.display = 'none';
+    }
+  };
+  
+  if (searchInput) {
+    searchInput.addEventListener('input', handleSearch);
+  }
+  
+  if (clearSearchBtn) {
+    clearSearchBtn.addEventListener('click', () => {
+      if (searchInput) searchInput.value = '';
+      // Restore default category (painting)
+      const defaultHeader = document.querySelector('.category-header[data-cat="painting"]') || catHeaders[0];
+      if (defaultHeader) {
+        defaultHeader.click();
+      }
+    });
+  }
+
+  // Scroll fades check handler
+  if (categoriesScroll && categoriesWrapper) {
+    const updateScrollFades = () => {
+      const scrollLeft = categoriesScroll.scrollLeft;
+      const maxScroll = categoriesScroll.scrollWidth - categoriesScroll.clientWidth;
+      
+      if (maxScroll <= 0) {
+        categoriesWrapper.classList.add('no-scroll');
+        return;
+      } else {
+        categoriesWrapper.classList.remove('no-scroll');
+      }
+      
+      if (scrollLeft > 10) {
+        categoriesWrapper.classList.add('scrolled-left');
+      } else {
+        categoriesWrapper.classList.remove('scrolled-left');
+      }
+      
+      if (maxScroll - scrollLeft > 10) {
+        categoriesWrapper.classList.add('scrolled-right');
+      } else {
+        categoriesWrapper.classList.remove('scrolled-right');
+      }
+    };
+    
+    categoriesScroll.addEventListener('scroll', updateScrollFades);
+    window.addEventListener('resize', updateScrollFades);
+    updateScrollFades(); // initial check
+  }
+
+  // Mobile "Read More" Toggle Logic
+  const setupReadMore = () => {
+    const isMobile = window.innerWidth <= 768;
+    
+    catCards.forEach(card => {
+      const desc = card.querySelector('.cat-service-desc');
+      if (!desc) return;
+      
+      // Remove any existing read-more button first
+      const existingBtn = card.querySelector('.read-more-btn');
+      if (existingBtn) existingBtn.remove();
+      
+      if (isMobile) {
+        if (desc.textContent.length > 120) {
+          desc.classList.remove('expanded');
+          const btn = document.createElement('button');
+          btn.className = 'read-more-btn';
+          btn.type = 'button';
+          btn.innerHTML = 'Read More <i class="ph ph-caret-down"></i>';
+          
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (desc.classList.contains('expanded')) {
+              desc.classList.remove('expanded');
+              btn.innerHTML = 'Read More <i class="ph ph-caret-down"></i>';
+            } else {
+              desc.classList.add('expanded');
+              btn.innerHTML = 'Read Less <i class="ph ph-caret-up"></i>';
+            }
+          });
+          
+          // Insert button before actions
+          const actions = card.querySelector('.cat-card-actions');
+          card.insertBefore(btn, actions);
+        }
+      } else {
+        desc.classList.remove('expanded');
+      }
+    });
+  };
+
+  setupReadMore();
+  window.addEventListener('resize', setupReadMore);
 
   // Enquire links on primary cards pre-select services
   const primaryEnquireLinks = document.querySelectorAll('.card-enquire-btn, .catalogue-link-btn, .btn-cat-quote');
