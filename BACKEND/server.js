@@ -20,13 +20,48 @@ app.use(express.json());
 // Raw password: Kamlesh@#2005 -> Encoded password: Kamlesh%40%232005
 const mongoURI = process.env.MONGODB_URI || 'mongodb+srv://kamleshsharmathink:Kamlesh%40%232005@cluster0.lpwxhp7.mongodb.net/Ujjwalinterior?appName=Cluster0';
 
-console.log('Connecting to MongoDB...');
-mongoose.connect(mongoURI)
-  .then(() => console.log('Successfully connected to MongoDB (Database: Ujjwalinterior)'))
-  .catch(err => {
-    console.error('MongoDB connection error:', err.message);
-    console.error('Full connection error detail:', err);
+let cachedConnection = null;
+
+async function connectToDatabase() {
+  if (mongoose.connection.readyState === 1) {
+    return mongoose.connection;
+  }
+  if (mongoose.connection.readyState === 2) {
+    await new Promise((resolve) => {
+      mongoose.connection.once('connected', resolve);
+      mongoose.connection.once('error', resolve);
+    });
+    return mongoose.connection;
+  }
+
+  console.log('Connecting to MongoDB...');
+  cachedConnection = mongoose.connect(mongoURI, {
+    serverSelectionTimeoutMS: 5000
   });
+
+  try {
+    await cachedConnection;
+    console.log('Successfully connected to MongoDB (Database: Ujjwalinterior)');
+  } catch (err) {
+    console.error('MongoDB connection error:', err.message);
+    cachedConnection = null;
+    throw err;
+  }
+  return mongoose.connection;
+}
+
+// Middleware to ensure DB connection
+const connectDbMiddleware = async (req, res, next) => {
+  try {
+    await connectToDatabase();
+    next();
+  } catch (err) {
+    console.error('Failed to connect to database in middleware:', err);
+    res.status(500).json({ error: 'Database connection failed. Please try again later.' });
+  }
+};
+
+app.use(connectDbMiddleware);
 
 // --- API ROUTES ---
 
