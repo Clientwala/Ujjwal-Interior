@@ -186,9 +186,9 @@ app.post('/api/leads/enquiry', async (req, res) => {
 
     const savedLead = await newLead.save();
     
-    // Send Telegram notification (non-blocking background call)
+    // Send Telegram notification (awaited to ensure completion in serverless environments)
     // Internal try/catch inside sendInquiryNotification guarantees it will not interrupt lead saving
-    sendInquiryNotification(savedLead);
+    await sendInquiryNotification(savedLead);
 
     res.status(201).json({
       message: 'Enquiry saved successfully to MongoDB.',
